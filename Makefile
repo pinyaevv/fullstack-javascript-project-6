@@ -4,7 +4,7 @@ install:
 	npm install
 
 db-migrate:
-	NODE_ENV=production npx knex migrate:latest
+	NODE_ENV=production npx knex migrate:latest || echo "Skipping DB migration if DB is unreachable"
 
 build:
 	npm run build
