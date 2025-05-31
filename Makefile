@@ -26,7 +26,7 @@ deploy: build
 	railway up --detach
 
 lint:
-	npm run lint
+	npx eslint .
 
 test:
 	npm test -s

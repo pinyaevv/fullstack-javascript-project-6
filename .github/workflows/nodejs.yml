@@ -13,7 +13,6 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: production
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     steps:
@@ -23,7 +22,10 @@ jobs:
         with:
           node-version: '18.x'
           cache: 'npm'
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
+        env:
+          NODE_ENV: development
       - run: make setup
       - run: make lint
       - run: make test
