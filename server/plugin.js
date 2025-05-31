@@ -85,8 +85,11 @@ const registerPlugins = async (app) => {
   // await app.register(fastifyErrorPage);
   await app.register(fastifyReverseRoutes);
   await app.register(fastifyFormbody, { parser: qs.parse });
-  await app.register(import('@fastify/helmet'));
-  await app.register(import('@fastify/cors'), {
+  const helmet = (await import('@fastify/helmet')).default;
+  await app.register(helmet);
+
+  const cors = (await import('@fastify/cors')).default;
+  await app.register(cors, {
     origin: process.env.APP_URL || '*',
   });
   await app.register(fastifySecureSession, {
@@ -112,7 +115,6 @@ const registerPlugins = async (app) => {
     },
   // @ts-ignore
   )(...args));
-
   await app.register(fastifyMethodOverride);
   await app.register(fastifyObjectionjs, {
     knexConfig: knexConfig[mode],

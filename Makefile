@@ -13,7 +13,8 @@ prepare:
 	cp -n .env.example .env || true
 
 start:
-	start-backend start-frontend
+	make start-backend
+	make start-frontend
 
 start-backend:
 	npm start -- --watch --verbose-watch --ignore-watch='node_modules .git .sqlite'
