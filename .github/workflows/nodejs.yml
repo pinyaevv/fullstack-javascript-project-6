@@ -26,10 +26,20 @@ jobs:
         env:
           NODE_ENV: development
       - run: make setup
+        env:
+          NODE_ENV: development
       - run: make build
+        env:
+          NODE_ENV: development
       - run: make db-migrate
+        env:
+          NODE_ENV: development
       - run: make lint
+        env:
+          NODE_ENV: development
       - run: make test
+        env:
+          NODE_ENV: development
 
   deploy:
     needs: build
