@@ -2,7 +2,7 @@
 
 export default {
   translation: {
-    appName: 'Fastify Boilerplate',
+    appName: 'Task Manager',
     flash: {
       session: {
         create: {
@@ -51,6 +51,11 @@ export default {
           description: 'Online programming school',
           more: 'Learn more',
         },
+      },
+      cover: {
+        title: 'Task Manager',
+        description: 'Organize your tasks effectively and stress-free.',
+        getStarted: 'Get Started',
       },
     },
   },
