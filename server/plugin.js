@@ -155,6 +155,10 @@ export default async (app, _options) => {
   await setupLocalization();
   setUpViews(app);
   setUpStaticAssets(app);
+  app.decorateRequest('t', null); // ✅ добавляем поле в каждый запрос
+  app.addHook('onRequest', async (req) => {
+    req.t = i18next.t.bind(i18next); // ✅ инициализируем переводчик
+  });
   addHooks(app);
   addRoutes(app);
 
