@@ -13,17 +13,34 @@ module.exports = class User extends unique(BaseModel) {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['email', 'password'],
+      required: ['firstName', 'lastName', 'email', 'password'],
       properties: {
         id: { type: 'integer' },
-        email: { type: 'string', minLength: 1 },
-        password: { type: 'string', minLength: 3 },
+        firstName: { type: 'string', minLength: 1 },
+        lastName: { type: 'string', minLength: 1 },
+        email: { type: 'string', format: 'email' },
       },
     };
   }
 
   set password(value) {
+    this._password = value;
     this.passwordDigest = encrypt(value);
+  }
+
+  get password() {
+    return this._password;
+  }
+
+  $formatDatabaseJson(json) {
+    const dbJson = super.$formatDatabaseJson(json);
+    delete dbJson._password;
+    return dbJson;
+  }
+
+  async $beforeInsert(context) {
+    await super.$beforeInsert(context);
+    this.passwordDigest = encrypt(this.password);
   }
 
   verifyPassword(password) {

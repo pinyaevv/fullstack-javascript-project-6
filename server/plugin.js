@@ -16,13 +16,14 @@ import fastifyObjectionjs from 'fastify-objectionjs';
 import qs from 'qs';
 import Pug from 'pug';
 import i18next from 'i18next';
+import dayjs from 'dayjs';
 
 import ru from './locales/ru.js';
 import en from './locales/en.js';
 // @ts-ignore
 import addRoutes from './routes/index.js';
 import getHelpers from './helpers/index.js';
-import * as knexConfig from '../knexfile.js';
+import knexConfig from '../knexfile.js';
 import models from './models/index.js';
 import FormStrategy from './lib/passportStrategies/FormStrategy.js';
 
@@ -41,12 +42,13 @@ const setUpViews = (app) => {
     defaultContext: {
       ...helpers,
       assetPath: (filename) => `/assets/${filename}`,
+      t: i18next.t,
     },
     templates: path.join(__dirname, '..', 'server', 'views'),
   });
 
-  app.decorateReply('render', function render(viewPath, locals) {
-    this.view(viewPath, { ...locals, reply: this });
+  app.decorateReply('render', function render(viewPath, locals = {}) {
+    return this.view(viewPath, { ...this.locals, ...locals, reply: this });
   });
 };
 
@@ -74,8 +76,22 @@ const setupLocalization = async () => {
 
 const addHooks = (app) => {
   app.addHook('preHandler', async (req, reply) => {
+    console.log('req.t:', req.t);
     reply.locals = {
+      t: req.t || i18next.t, // fallback, если req.t нет
+      route: app.reverse.bind(app),
       isAuthenticated: () => req.isAuthenticated(),
+      flash: () => req.flash(),
+      getAlertClass: (type) => {
+        switch (type) {
+        case 'error': return 'alert-danger';
+        case 'info': return 'alert-info';
+        case 'warning': return 'alert-warning';
+        case 'success': return 'alert-success';
+        default: return 'alert-secondary';
+        }
+      },
+      formatDate: (date) => dayjs(date).format('YYYY-MM-DD HH:mm:ss'),
     };
   });
 };
@@ -111,14 +127,20 @@ const registerPlugins = async (app) => {
     'form',
     {
       failureRedirect: app.reverse('root'),
-      failureFlash: i18next.t('flash.authError'),
+      failureFlash: { message: i18next.t('flash.authError') },
     },
   // @ts-ignore
   )(...args));
   await app.register(fastifyMethodOverride);
+  console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
+  console.log('mode:', mode);
+  console.log('knexConfig keys:', Object.keys(knexConfig));
   await app.register(fastifyObjectionjs, {
     knexConfig: knexConfig[mode],
     models,
+  }).after(() => {
+    const knexInstance = app.objection.knex;
+    console.log('Knex connection config:', knexInstance.client.config.connection);
   });
 };
 
@@ -133,8 +155,8 @@ export default async (app, _options) => {
   await setupLocalization();
   setUpViews(app);
   setUpStaticAssets(app);
-  addRoutes(app);
   addHooks(app);
+  addRoutes(app);
 
   return app;
 };

@@ -18,6 +18,13 @@ export default {
           error: 'Failed to register',
           success: 'User registered successfully',
         },
+        update: {
+          error: 'Error updating data',
+          success: 'User data updated successfully',
+        },
+        delete: {
+          success: 'User successfully deleted',
+        },
       },
       authError: 'Access denied! Please login',
     },
@@ -43,6 +50,10 @@ export default {
         new: {
           submit: 'Register',
           signUp: 'Register',
+        },
+        edit: {
+          editProfile: 'Edit profile',
+          submit: 'Save',
         },
       },
       welcome: {

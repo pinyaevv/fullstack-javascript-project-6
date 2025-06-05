@@ -32,19 +32,23 @@ html(lang="en")
             ul.navbar-nav.mr-auto
               li.nav-item
                 a.nav-link(href=route('users'))= t('layouts.application.users')
-          ul.navbar-nav
-            if isAuthenticated()
-              li.nav-item
-                +buttonTo(route('session'), 'delete')(class="btn nav-link" value=t('layouts.application.signOut'))
-            else
-              li.nav-item
-                a.nav-link(href=route('newSession'))= t('layouts.application.signIn')
-              li.nav-item
-                a.nav-link(href=route('newUser'))= t('layouts.application.signUp')
+            ul.navbar-nav
+              if isAuthenticated()
+                li.nav-item
+                  form(action=route('deleteSession') method='post' class="d-inline")
+                    input(type="hidden", name="_method", value="delete")
+                    button.btn.nav-link(type="submit")= t('layouts.application.signOut')
+              else
+                li.nav-item
+                  a.nav-link(href=route('newSession'))= t('layouts.application.signIn')
+                li.nav-item
+                  a.nav-link(href=route('newUser'))= t('layouts.application.signUp')
     .container.flex-grow-1.bg-dark.text-light.d-flex.flex-column.justify-content-center.align-items-center
-      each messages, type in reply.flash() || []
-        each message in messages
-          div.alert(class=`alert-${getAlertClass(type)}`)= message
+      if flash
+        each messages, type in flash
+          if messages && messages.length
+            each message in messages
+              div.alert(class=`alert ${getAlertClass(type)}` role="alert")= message
 
       h1.my-4
         block header

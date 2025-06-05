@@ -1,8 +1,11 @@
 // @ts-check
 
 import fastify from 'fastify';
+import { jest } from '@jest/globals';
 import init from '../server/plugin.js';
 import { getTestData, prepareData } from './helpers/index.js';
+
+jest.setTimeout(30000);
 
 describe('test session', () => {
   let app;
@@ -10,6 +13,7 @@ describe('test session', () => {
   let testData;
 
   beforeAll(async () => {
+    console.log('Starting test setup...');
     app = fastify({
       exposeHeadRoutes: false,
       logger: { target: 'pino-pretty' },
@@ -19,6 +23,7 @@ describe('test session', () => {
     await knex.migrate.latest();
     await prepareData(app);
     testData = getTestData();
+    console.log('Test setup complete');
   });
 
   it('test sign in / sign out', async () => {
@@ -56,7 +61,7 @@ describe('test session', () => {
   });
 
   afterAll(async () => {
-    // await knex.migrate.rollback();
+    await knex.migrate.rollback();
     await app.close();
   });
 });

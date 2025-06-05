@@ -1,13 +1,11 @@
----
-
 root: true
 
 parserOptions:
   ecmaVersion: latest
 
 extends:
-  - 'airbnb-base'
-  - 'plugin:jest/recommended'
+  - airbnb-base
+  - plugin:jest/recommended
 
 env:
   browser: true
@@ -17,6 +15,9 @@ env:
 rules:
   no-console: 0
   import/extensions: 0
+  indent:
+    - error
+    - 2
   new-cap:
     - error
     - properties: false
@@ -24,6 +25,13 @@ rules:
     - error
     - props: true
       ignorePropertyModificationsFor:
-      - req
-      - reply
-  no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
+        - req
+        - reply
+        - acc
+  no-underscore-dangle:
+    - error
+    - allowAfterThis: true
+      allow:
+        - _t
+        - __dirname
+        - __filename
