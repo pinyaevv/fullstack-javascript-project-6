@@ -14,6 +14,7 @@ export default {
         },
       },
       users: {
+        accessDenied: 'Access denied',
         create: {
           error: 'Failed to register',
           success: 'User registered successfully',
@@ -26,6 +27,23 @@ export default {
           success: 'User successfully deleted',
         },
       },
+      statuses: {
+        create: {
+          success: 'Status created successfull',
+          error: 'Error creating status',
+        },
+        edit: {
+          notFound: 'Status not found',
+        },
+        update: {
+          success: 'Status updated successfully',
+          error: 'Error updating status',
+        },
+        delete: {
+          success: 'Status deleted successfully',
+          error: 'Error deleting status',
+        },
+      },
       authError: 'Access denied! Please login',
     },
     layouts: {
@@ -34,6 +52,7 @@ export default {
         signIn: 'Login',
         signUp: 'Register',
         signOut: 'Logout',
+        statuses: 'Statuses',
       },
     },
     views: {

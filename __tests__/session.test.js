@@ -13,7 +13,7 @@ describe('test session', () => {
   let testData;
 
   beforeAll(async () => {
-    console.log('Starting test setup...');
+    console.log('SESSION_KEY in test:', process.env.SESSION_KEY);
     app = fastify({
       exposeHeadRoutes: false,
       logger: { target: 'pino-pretty' },
@@ -23,7 +23,6 @@ describe('test session', () => {
     await knex.migrate.latest();
     await prepareData(app);
     testData = getTestData();
-    console.log('Test setup complete');
   });
 
   it('test sign in / sign out', async () => {

@@ -1,6 +1,6 @@
 // @ts-check
 import i18next from 'i18next';
-import encrypt from '../lib/secure.cjs';
+import { encrypt } from '../lib/secure.cjs';
 
 export default (app) => {
   app
@@ -14,6 +14,12 @@ export default (app) => {
     })
     .get('/users/:id/edit', { name: 'editUser' }, async (req, reply) => {
       const { id } = req.params;
+
+      if (!req.user || req.user.id !== Number(id)) {
+        req.flash('error', i18next.t('flash.users.accessDenied'));
+        return reply.redirect(app.reverse('root'));
+      }
+
       const user = await app.objection.models.user.query().findById(id);
       return reply.render('users/edit', { user });
     })
@@ -75,7 +81,7 @@ export default (app) => {
         req.flash('info', i18next.t('flash.users.delete.success'));
 
         if (req.user.id === Number(id)) {
-          req.logOut();
+          req.logout();
         }
 
         return reply.redirect(app.reverse('users'));

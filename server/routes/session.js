@@ -1,9 +1,10 @@
 // @ts-check
 
+import i18next from 'i18next';
+
 export default (app) => {
   app
     .get('/session/new', { name: 'newSession' }, (req, reply) => {
-      console.log('req.t exists?', typeof req.t === 'function');
       const signInForm = {};
       return reply.render('session/new', { signInForm });
     })
@@ -14,17 +15,21 @@ export default (app) => {
       if (!user) {
         const signInForm = req.body.data;
         const errors = {
-          email: [{ message: req.t('flash.session.create.error') }],
+          email: [{ message: i18next.t('flash.session.create.error') }],
         };
         return reply.render('session/new', { signInForm, errors });
       }
+
+      console.log('authenticated user:', user);
+
       await req.logIn(user);
-      req.flash('success', req.t('flash.session.create.success'));
+      console.log('AFTER LOGIN:', req.isAuthenticated());
+      req.flash('success', i18next.t('flash.session.create.success'));
       return reply.redirect(app.reverse('root'));
     }))
-    .delete('/session', { name: 'deleteSession' }, (req, reply) => {
+    .delete('/session', (req, reply) => {
       req.logOut();
-      req.flash('info', req.t('flash.session.delete.success'));
+      req.flash('info', i18next.t('flash.session.delete.success'));
       return reply.redirect(app.reverse('root'));
     });
 };

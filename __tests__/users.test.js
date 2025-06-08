@@ -4,8 +4,8 @@ import _ from 'lodash';
 import fastify from 'fastify';
 
 import { jest } from '@jest/globals';
-import init from '../server/plugin.js'; // твой инициализатор, где регаешь fastifySecureSession
-import encrypt from '../server/lib/secure.cjs';
+import init from '../server/plugin.js';
+import { verify, encrypt } from '../server/lib/secure.cjs';
 import { getTestData, prepareData } from './helpers/index.js';
 
 jest.setTimeout(20000);
@@ -17,7 +17,7 @@ describe('test users CRUD', () => {
   const testData = getTestData();
 
   beforeAll(async () => {
-    console.log('Starting test setup...');
+    console.log('SESSION_KEY in test:', process.env.SESSION_KEY);
     app = fastify({
       exposeHeadRoutes: false,
       logger: false, // для тестов лучше без логов или с target: 'pino-pretty'
@@ -33,7 +33,6 @@ describe('test users CRUD', () => {
 
     // Подготавливаем данные
     await prepareData(app);
-    console.log('Test setup complete');
   });
 
   it('index', async () => {
@@ -68,7 +67,8 @@ describe('test users CRUD', () => {
     };
 
     const user = await models.user.query().findOne({ email: params.email });
-    expect(user).toMatchObject(expected);
+    expect(user).toMatchObject(_.omit(params, 'password'));
+    expect(verify(params.password, user.passwordDigest)).toBe(true);
   });
 
   test('update user (self)', async () => {
@@ -79,6 +79,7 @@ describe('test users CRUD', () => {
       url: app.reverse('session'),
       payload: { data: existing },
     });
+    console.log('Login cookies:', loginResponse.cookies);
     expect(loginResponse.statusCode).toBe(302);
 
     const [sessionCookie] = loginResponse.cookies;

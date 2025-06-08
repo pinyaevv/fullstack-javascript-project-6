@@ -76,7 +76,6 @@ const setupLocalization = async () => {
 
 const addHooks = (app) => {
   app.addHook('preHandler', async (req, reply) => {
-    console.log('req.t:', req.t);
     reply.locals = {
       t: req.t || i18next.t, // fallback, если req.t нет
       route: app.reverse.bind(app),
@@ -155,9 +154,9 @@ export default async (app, _options) => {
   await setupLocalization();
   setUpViews(app);
   setUpStaticAssets(app);
-  app.decorateRequest('t', null); // ✅ добавляем поле в каждый запрос
+  app.decorateRequest('t', null);
   app.addHook('onRequest', async (req) => {
-    req.t = i18next.t.bind(i18next); // ✅ инициализируем переводчик
+    req.t = i18next.t.bind(i18next);
   });
   addHooks(app);
   addRoutes(app);

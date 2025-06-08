@@ -22,6 +22,6 @@ export default class FormStrategy extends Strategy {
       return this.success(user);
     }
 
-    return this.fail();
+    return this.fail({ message: 'Invalid credentials' }, 401);
   }
 }
