@@ -77,7 +77,7 @@ const setupLocalization = async () => {
 const addHooks = (app) => {
   app.addHook('preHandler', async (req, reply) => {
     reply.locals = {
-      t: req.t || i18next.t, // fallback, если req.t нет
+      t: req.t || i18next.t,
       route: app.reverse.bind(app),
       isAuthenticated: () => req.isAuthenticated(),
       flash: () => req.flash(),
@@ -160,6 +160,5 @@ export default async (app, _options) => {
   });
   addHooks(app);
   addRoutes(app);
-
   return app;
 };

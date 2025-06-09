@@ -2,21 +2,21 @@
 
 export default {
   translation: {
-    appName: 'Fastify Шаблон',
+    appName: 'Менеджер задач',
     flash: {
       session: {
         create: {
-          success: 'Вы залогинены',
-          error: 'Неправильный емейл или пароль',
+          success: 'Вы вошли в систему',
+          error: 'Неверный email или пароль',
         },
         delete: {
-          success: 'Вы разлогинены',
+          success: 'Вы вышли из системы',
         },
       },
       users: {
         accessDenied: 'Доступ запрещён',
         create: {
-          error: 'Не удалось зарегистрировать',
+          error: 'Не удалось зарегистрироваться',
           success: 'Пользователь успешно зарегистрирован',
         },
         update: {
@@ -24,50 +24,27 @@ export default {
           success: 'Данные пользователя успешно обновлены',
         },
         delete: {
-          success: 'Пользователь успешно удален',
+          success: 'Пользователь успешно удалён',
         },
       },
       statuses: {
         create: {
-          success: 'Статус создан успешно',
-          error: 'Ошибка создания статуса',
+          success: 'Статус успешно создан',
+          error: 'Ошибка при создании статуса',
         },
         edit: {
           notFound: 'Статус не найден',
         },
         update: {
-          success: 'Статус успешно обновлен',
-          error: 'Ошибка обновления статуса',
+          success: 'Статус успешно обновлён',
+          error: 'Ошибка при обновлении статуса',
         },
         delete: {
-          success: 'Cтатус успешно удален',
-          error: 'Ошибка удаления статуса',
+          success: 'Статус успешно удалён',
+          error: 'Ошибка при удалении статуса',
         },
-        index: {
-          header: "Task Statuses",
-          newStatus: "New Status",
-          noStatuses: "No statuses found.",
-          table: {
-            name: "Name",
-            actions: "Actions"
-          },
-          edit: 'Edit',
-          delete: "Delete",
-          deleteConfirm: "Are you sure you want to delete this status?"
-        },
-        "new": {
-          "header": "Create New Status",
-          "submit": "Create"
-        },
-        "edit": {
-          "header": "Edit Status",
-          "submit": "Update"
-        },
-        "form": {
-          "name": "Name",
-          "cancel": "Cancel"
-        },
-      authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
+      },
+      authError: 'Доступ запрещён! Пожалуйста, войдите в систему',
     },
     layouts: {
       application: {
@@ -90,7 +67,7 @@ export default {
         email: 'Email',
         createdAt: 'Дата создания',
         new: {
-          submit: 'Сохранить',
+          submit: 'Зарегистрироваться',
           signUp: 'Регистрация',
         },
         edit: {
@@ -101,16 +78,15 @@ export default {
       welcome: {
         index: {
           hello: 'Привет от Хекслета!',
-          description: 'Практические курсы по программированию',
-          more: 'Узнать Больше',
+          description: 'Онлайн-школа программирования',
+          more: 'Узнать больше',
         },
       },
       cover: {
         title: 'Менеджер задач',
         description: 'Организуйте свои задачи эффективно и без стресса.',
-        getStarted: 'Начать работу',
+        getStarted: 'Начать',
       },
     },
   },
 };
-

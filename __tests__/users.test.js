@@ -3,12 +3,9 @@
 import _ from 'lodash';
 import fastify from 'fastify';
 
-import { jest } from '@jest/globals';
 import init from '../server/plugin.js';
 import { verify, encrypt } from '../server/lib/secure.cjs';
 import { getTestData, prepareData } from './helpers/index.js';
-
-jest.setTimeout(20000);
 
 describe('test users CRUD', () => {
   let app;
@@ -20,7 +17,7 @@ describe('test users CRUD', () => {
     console.log('SESSION_KEY in test:', process.env.SESSION_KEY);
     app = fastify({
       exposeHeadRoutes: false,
-      logger: false, // для тестов лучше без логов или с target: 'pino-pretty'
+      logger: false,
     });
 
     await init(app);
@@ -28,10 +25,8 @@ describe('test users CRUD', () => {
     knex = app.objection.knex;
     models = app.objection.models;
 
-    // Применяем миграции для in-memory базы (если используешь in-memory sqlite)
     await knex.migrate.latest();
 
-    // Подготавливаем данные
     await prepareData(app);
   });
 

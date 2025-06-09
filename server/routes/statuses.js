@@ -1,15 +1,25 @@
 import i18next from 'i18next';
-import authGuard from '../plugins/authGuard.js';
+import buildAuthGuard from '../plugins/authGuard.js';
 
 export default (app) => {
-  app.get('/statuses', async (req, reply) => {
+  const authGuard = buildAuthGuard(app);
+
+  app.get('/statuses', {
+    name: 'statuses',
+  }, async (req, reply) => {
     const statuses = await app.objection.models.taskStatus.query();
     return reply.render('statuses/index', { statuses });
   });
 
-  app.get('/statuses/new', { preHandler: authGuard }, async (req, reply) => reply.render('statuses/new'));
+  app.get('/statuses/new', {
+    name: 'statuses.new',
+    preHandler: authGuard,
+  }, async (req, reply) => reply.render('statuses/new'));
 
-  app.get('/statuses/:id/edit', { preHandler: authGuard }, async (req, reply) => {
+  app.get('/statuses/:id/edit', {
+    name: 'statuses.edit',
+    preHandler: authGuard,
+  }, async (req, reply) => {
     const { id } = req.params;
     const status = await app.objection.models.taskStatus.query().findById(id);
     if (!status) {
@@ -19,7 +29,10 @@ export default (app) => {
     return reply.render('statuses/edit', { status });
   });
 
-  app.post('/statuses', { preHandler: authGuard }, async (req, reply) => {
+  app.post('/statuses', {
+    name: 'statuses.create',
+    preHandler: authGuard,
+  }, async (req, reply) => {
     try {
       await app.objection.models.taskStatus.query().insert(req.body.data);
       req.flash('success', i18next.t('flash.statuses.create.success'));
@@ -30,7 +43,10 @@ export default (app) => {
     }
   });
 
-  app.patch('/statuses/:id', { preHandler: authGuard }, async (req, reply) => {
+  app.patch('/statuses/:id', {
+    name: 'statuses.update',
+    preHandler: authGuard,
+  }, async (req, reply) => {
     const { id } = req.params;
     try {
       await app.objection.models.taskStatus.query().patchAndFetchById(id, req.body.data);
@@ -43,7 +59,10 @@ export default (app) => {
     }
   });
 
-  app.delete('/statuses/:id', { preHandler: authGuard }, async (req, reply) => {
+  app.delete('/statuses/:id', {
+    name: 'statuses.delete',
+    preHandler: authGuard,
+  }, async (req, reply) => {
     const { id } = req.params;
     try {
       await app.objection.models.taskStatus.query().deleteById(id);

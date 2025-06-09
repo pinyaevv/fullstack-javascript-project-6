@@ -27,7 +27,7 @@ export default (app) => {
       req.flash('success', i18next.t('flash.session.create.success'));
       return reply.redirect(app.reverse('root'));
     }))
-    .delete('/session', (req, reply) => {
+    .delete('/session', { name: 'deleteSession' }, (req, reply) => {
       req.logOut();
       req.flash('info', i18next.t('flash.session.delete.success'));
       return reply.redirect(app.reverse('root'));

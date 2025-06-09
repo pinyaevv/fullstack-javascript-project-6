@@ -11,6 +11,7 @@
       "prebuild": "rm -rf dist",
       "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
       "lint": "eslint .",
+      "lint:fix": "eslint . --fix",
       "build": "webpack",
       "start": "fastify start server/plugin.js -l debug -P -o --address 0.0.0.0"
    },

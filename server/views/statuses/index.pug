@@ -1,32 +1,6 @@
 extends ../layouts/application.pug
 
 block header
-  = t('statuses.index.header')
-
-block content
-  a.btn.btn-primary.mb-3(href=route('statuses.new'))= t('statuses.index.newStatus')
-  
-  if statuses.length === 0
-    p= t('statuses.index.noStatuses')
-  else
-    table.table.table-striped
-      thead
-        tr
-          th= t('statuses.index.table.name')
-          th= t('statuses.index.table.actions')
-      tbody
-        each status in statuses
-          tr
-            td= status.name
-            td
-              a.btn.btn-sm.btn-secondary(href=route('statuses.edit', { id: status.id }))= t('statuses.index.edit')
-              form.d-inline(method='POST', action=route('statuses.delete', { id: status.id }))
-                input(type='hidden', name='_method', value='DELETE')
-                button.btn.btn-sm.btn-danger(type='submit', onclick="return confirm('" + t('statuses.index.deleteConfirm') + "');")= t('statuses.index.delete')
-
-extends ../layouts/application.pug
-
-block header
   | #{t('statuses.index.header')}
 
 block content
