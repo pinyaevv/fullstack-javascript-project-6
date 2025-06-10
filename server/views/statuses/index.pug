@@ -9,12 +9,15 @@ block content
   table.table.mt-3
     thead
       tr
+        th= t('statuses.index.id')
         th= t('statuses.index.name')
-        th
+        th= t('statuses.index.createdAt')
     tbody
       each status in statuses
         tr
+          td= status.id
           td= status.name
+          td= formatDate(status.createdAt)
           td
             a.btn.btn-sm.btn-outline-primary.me-2(href=route('statuses.edit', { id: status.id }))= t('statuses.index.edit')
             +buttonTo(route('statuses.delete', { id: status.id }), 'delete')(

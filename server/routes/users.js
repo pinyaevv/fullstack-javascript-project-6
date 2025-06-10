@@ -31,6 +31,7 @@ export default (app) => {
         const validUser = await app.objection.models.user.fromJson(req.body.data);
         await app.objection.models.user.query().insert(validUser);
         req.flash('info', i18next.t('flash.users.create.success'));
+        console.log('Redirecting to root after successful registration');
         return reply.redirect(app.reverse('root'));
       } catch (error) {
         console.error('Registration error:', error);

@@ -28,12 +28,13 @@ export default {
         },
       },
       statuses: {
-        create: {
-          success: 'Status created successfull',
-          error: 'Error creating status',
+        new: {
+          header: 'Create new status',
+          submit: 'Send',
         },
-        edit: {
-          notFound: 'Status not found',
+        create: {
+          success: 'Status created successfully',
+          error: 'Error creating status',
         },
         update: {
           success: 'Status updated successfully',
@@ -86,6 +87,18 @@ export default {
         title: 'Task Manager',
         description: 'Organize your tasks effectively and stress-free.',
         getStarted: 'Get Started',
+      },
+    },
+    statuses: {
+      index: {
+        id: 'ID',
+        header: 'Statuses',
+        new: 'Create status',
+        name: 'Name',
+        createdAt: 'Created at',
+        edit: 'Change',
+        delete: 'Delete',
+        confirm: 'Are you sure you want to delete this status?',
       },
     },
   },

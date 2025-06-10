@@ -20,10 +20,7 @@ export default (app) => {
         return reply.render('session/new', { signInForm, errors });
       }
 
-      console.log('authenticated user:', user);
-
       await req.logIn(user);
-      console.log('AFTER LOGIN:', req.isAuthenticated());
       req.flash('success', i18next.t('flash.session.create.success'));
       return reply.redirect(app.reverse('root'));
     }))

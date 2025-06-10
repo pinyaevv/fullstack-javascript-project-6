@@ -1,8 +1,12 @@
 - const getInputName = (property) => `data[${property}]`
 - const getInputId = (property) => `data_${property}`
 
-mixin formFor(entity = null)
-  form&attributes(attributes)
+mixin formFor(entity = null, options = {})
+  - const url = options.action || ''
+  - const method = options.method || 'POST'
+  form(action=url method=method)&attributes(attributes)
+    if method !== 'GET' && method !== 'POST'
+      input(type='hidden' name='_method' value=method)
     block
 
 mixin input(entity, propertyName, errors = {})
@@ -12,7 +16,7 @@ mixin input(entity, propertyName, errors = {})
   .mb-3(class=(errors[propertyName] && 'has-danger'))
     label(
       for= inputId
-    )= propertyName
+    )= attributes.label || propertyName
     input(
       id= inputId
       name=getInputName(propertyName)
@@ -22,7 +26,7 @@ mixin input(entity, propertyName, errors = {})
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
-mixin submit(form = null)
+mixin submit(attributes)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
 
 mixin buttonTo(action, method)

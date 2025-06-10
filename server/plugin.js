@@ -76,11 +76,16 @@ const setupLocalization = async () => {
 
 const addHooks = (app) => {
   app.addHook('preHandler', async (req, reply) => {
+    // Забираем и сразу удаляем flash из сессии
+    const flash = req.session.get('flash') || {};
+    req.session.set('flash', {}); // <-- ключевой момент!
+
+    // Передаём во все шаблоны
     reply.locals = {
       t: req.t || i18next.t,
       route: app.reverse.bind(app),
       isAuthenticated: () => req.isAuthenticated(),
-      flash: () => req.flash(),
+      flash,
       getAlertClass: (type) => {
         switch (type) {
         case 'error': return 'alert-danger';
@@ -92,8 +97,17 @@ const addHooks = (app) => {
       },
       formatDate: (date) => dayjs(date).format('YYYY-MM-DD HH:mm:ss'),
     };
+
+    // Метод для добавления flash-сообщений
+    req.flash = (type, message) => {
+      const current = req.session.get('flash') || {};
+      if (!current[type]) current[type] = [];
+      current[type].push(message);
+      req.session.set('flash', current);
+    };
   });
 };
+
 
 const registerPlugins = async (app) => {
   await app.register(fastifySensible);
@@ -111,6 +125,7 @@ const registerPlugins = async (app) => {
     secret: process.env.SESSION_KEY,
     cookie: {
       path: '/',
+      secure: false,
     },
   });
 

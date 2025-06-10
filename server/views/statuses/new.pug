@@ -5,5 +5,5 @@ block header
 
 block content
   +formFor(status, { action: route('statuses'), method: 'POST' })
-    +input(status, 'name', errors)
+    +input(status, 'name', errors, placeHolder='name')
     +submit({ value: t('statuses.new.submit') })

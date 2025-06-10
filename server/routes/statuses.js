@@ -8,7 +8,11 @@ export default (app) => {
     name: 'statuses',
   }, async (req, reply) => {
     const statuses = await app.objection.models.taskStatus.query();
-    return reply.render('statuses/index', { statuses });
+    return reply.render('statuses/index', {
+      statuses,
+      t: req.t,
+      route: app.reverse,
+    });
   });
 
   app.get('/statuses/new', {
@@ -33,6 +37,7 @@ export default (app) => {
     name: 'statuses.create',
     preHandler: authGuard,
   }, async (req, reply) => {
+    console.log('Request body:', req.body);
     try {
       await app.objection.models.taskStatus.query().insert(req.body.data);
       req.flash('success', i18next.t('flash.statuses.create.success'));
