@@ -1,15 +1,16 @@
 // @ts-check
 import fastify from 'fastify';
-import _ from 'lodash';
 
 import init from '../server/plugin.js';
-import { getTestData, prepareData } from './helpers/index.js';
+import { buildUser } from './factories/userFactory.js';
+import prepareData from './helpers/index.js';
 
 describe('Task statuses CRUD', () => {
   let app;
   let knex;
   let models;
-  const testData = getTestData();
+  let user;
+  let cookies;
 
   beforeAll(async () => {
     app = fastify({ logger: false });
@@ -19,6 +20,18 @@ describe('Task statuses CRUD', () => {
 
     await knex.migrate.latest();
     await prepareData(app);
+
+    user = buildUser();
+    await models.user.query().insert(user);
+
+    const login = await app.inject({
+      method: 'POST',
+      url: app.reverse('session'),
+      payload: { data: { email: user.email, password: user.password } },
+    });
+
+    const [cookie] = login.cookies;
+    cookies = { [cookie.name]: cookie.value };
   });
 
   it('index page', async () => {
@@ -38,17 +51,6 @@ describe('Task statuses CRUD', () => {
   });
 
   it('create', async () => {
-    const { existing } = testData.users;
-
-    const login = await app.inject({
-      method: 'POST',
-      url: app.reverse('session'),
-      payload: { data: existing },
-    });
-
-    const [cookie] = login.cookies;
-    const cookies = { [cookie.name]: cookie.value };
-
     const params = { name: 'ready' };
 
     const res = await app.inject({
@@ -64,16 +66,6 @@ describe('Task statuses CRUD', () => {
   });
 
   it('update', async () => {
-    const { existing } = testData.users;
-    const login = await app.inject({
-      method: 'POST',
-      url: app.reverse('session'),
-      payload: { data: existing },
-    });
-
-    const [cookie] = login.cookies;
-    const cookies = { [cookie.name]: cookie.value };
-
     const status = await models.taskStatus.query().insert({ name: 'will-be-updated' });
 
     const res = await app.inject({
@@ -90,16 +82,6 @@ describe('Task statuses CRUD', () => {
   });
 
   it('delete', async () => {
-    const { existing } = testData.users;
-    const login = await app.inject({
-      method: 'POST',
-      url: app.reverse('session'),
-      payload: { data: existing },
-    });
-
-    const [cookie] = login.cookies;
-    const cookies = { [cookie.name]: cookie.value };
-
     const status = await models.taskStatus.query().insert({ name: 'to-be-deleted' });
 
     const res = await app.inject({

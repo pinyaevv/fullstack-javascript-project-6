@@ -4,30 +4,29 @@ import _ from 'lodash';
 import fastify from 'fastify';
 
 import init from '../server/plugin.js';
-import { verify, encrypt } from '../server/lib/secure.cjs';
-import { getTestData, prepareData } from './helpers/index.js';
+import { verify } from '../server/lib/secure.cjs';
+import prepareData from './helpers/index.js';
+import { buildUser } from './factories/userFactory.js';
 
 describe('test users CRUD', () => {
   let app;
   let knex;
   let models;
-  const testData = getTestData();
+  let testUsers;
 
   beforeAll(async () => {
-    console.log('SESSION_KEY in test:', process.env.SESSION_KEY);
     app = fastify({
       exposeHeadRoutes: false,
       logger: false,
     });
 
     await init(app);
-
     knex = app.objection.knex;
     models = app.objection.models;
 
     await knex.migrate.latest();
-
-    await prepareData(app);
+    const data = await prepareData(app);
+    testUsers = data.users;
   });
 
   it('index', async () => {
@@ -47,7 +46,8 @@ describe('test users CRUD', () => {
   });
 
   it('create', async () => {
-    const params = testData.users.new;
+    const params = buildUser();
+
     const response = await app.inject({
       method: 'POST',
       url: app.reverse('users'),
@@ -56,25 +56,19 @@ describe('test users CRUD', () => {
 
     expect(response.statusCode).toBe(302);
 
-    const expected = {
-      ..._.omit(params, 'password'),
-      passwordDigest: encrypt(params.password),
-    };
-
     const user = await models.user.query().findOne({ email: params.email });
     expect(user).toMatchObject(_.omit(params, 'password'));
     expect(verify(params.password, user.passwordDigest)).toBe(true);
   });
 
   test('update user (self)', async () => {
-    const { existing } = testData.users;
+    const existing = testUsers[0];
 
     const loginResponse = await app.inject({
       method: 'POST',
       url: app.reverse('session'),
       payload: { data: existing },
     });
-    console.log('Login cookies:', loginResponse.cookies);
     expect(loginResponse.statusCode).toBe(302);
 
     const [sessionCookie] = loginResponse.cookies;
@@ -86,7 +80,6 @@ describe('test users CRUD', () => {
       firstName: 'UpdatedName',
       lastName: 'UpdatedLast',
       email: existing.email,
-      password: '',
     };
 
     const response = await app.inject({
@@ -107,7 +100,7 @@ describe('test users CRUD', () => {
   });
 
   it('fail to update another user', async () => {
-    const params = testData.users.another;
+    const [existing, another] = testUsers;
     const updateData = {
       email: 'updated@example.com',
       password: 'newpassword',
@@ -118,14 +111,14 @@ describe('test users CRUD', () => {
     const loginResponse = await app.inject({
       method: 'POST',
       url: app.reverse('session'),
-      payload: { data: params },
+      payload: { data: another },
     });
     expect(loginResponse.statusCode).toBe(302);
 
     const [sessionCookie] = loginResponse.cookies;
     const cookies = { [sessionCookie.name]: sessionCookie.value };
 
-    const targetUser = await models.user.query().findOne({ email: testData.users.existing.email });
+    const targetUser = await models.user.query().findOne({ email: existing.email });
     expect(targetUser).not.toBeNull();
 
     const response = await app.inject({
@@ -142,19 +135,19 @@ describe('test users CRUD', () => {
   });
 
   it('delete user (self)', async () => {
-    const params = testData.users.existing;
+    const existing = testUsers[0];
 
     const loginResponse = await app.inject({
       method: 'POST',
       url: app.reverse('session'),
-      payload: { data: params },
+      payload: { data: existing },
     });
     expect(loginResponse.statusCode).toBe(302);
 
     const [sessionCookie] = loginResponse.cookies;
     const cookies = { [sessionCookie.name]: sessionCookie.value };
 
-    const user = await models.user.query().findOne({ email: params.email });
+    const user = await models.user.query().findOne({ email: existing.email });
     expect(user).not.toBeNull();
 
     const deleteResponse = await app.inject({
@@ -170,20 +163,19 @@ describe('test users CRUD', () => {
   });
 
   it('fail to delete another user', async () => {
-    const anotherUser = testData.users.another;
-    const targetUser = testData.users.existing;
+    const [existing, another] = testUsers;
 
     const loginResponse = await app.inject({
       method: 'POST',
       url: app.reverse('session'),
-      payload: { data: anotherUser },
+      payload: { data: another },
     });
     expect(loginResponse.statusCode).toBe(302);
 
     const [sessionCookie] = loginResponse.cookies;
     const cookies = { [sessionCookie.name]: sessionCookie.value };
 
-    const user = await models.user.query().findOne({ email: targetUser.email });
+    const user = await models.user.query().findOne({ email: existing.email });
     expect(user).not.toBeNull();
 
     const deleteResponse = await app.inject({

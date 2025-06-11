@@ -2,21 +2,15 @@
   "users": {
     "new": {
       "email": "malika_hodkiewicz75@live.com",
-      "password": "RLJvaIgPOnX5r03",
-      "firstName": "Eva",
-      "lastName": "Tyr"
+      "password": "RLJvaIgPOnX5r03"
     },
     "existing": {
       "email": "lawrence.kulas87@outlook.com",
-      "password": "O6AvLIQL1cbzrre",
-      "firstName": "Mary",
-      "lastName": "Yan"
+      "password": "O6AvLIQL1cbzrre"
     },
     "another": {
       "email": "laryel.ttttt87@outlook.com",
-      "password": "FDJKdejr34fnlJ",
-      "firstName": "Ymakyshi",
-      "lastName": "Tonyro"
+      "password": "FDJKdejr34fnlJ"
     }
   }
 }

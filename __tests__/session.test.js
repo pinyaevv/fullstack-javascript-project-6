@@ -3,26 +3,30 @@
 import fastify from 'fastify';
 import { jest } from '@jest/globals';
 import init from '../server/plugin.js';
-import { getTestData, prepareData } from './helpers/index.js';
+import prepareData from './helpers/index.js';
+import { buildUser } from './factories/userFactory.js';
 
 jest.setTimeout(30000);
 
 describe('test session', () => {
   let app;
   let knex;
-  let testData;
+  let user;
 
   beforeAll(async () => {
-    console.log('SESSION_KEY in test:', process.env.SESSION_KEY);
     app = fastify({
       exposeHeadRoutes: false,
-      logger: { target: 'pino-pretty' },
+      logger: false,
     });
+
     await init(app);
     knex = app.objection.knex;
+
     await knex.migrate.latest();
-    await prepareData(app);
-    testData = getTestData();
+
+    user = await buildUser(app);
+
+    await prepareData(app, { users: [user] });
   });
 
   it('test sign in / sign out', async () => {
@@ -30,21 +34,21 @@ describe('test session', () => {
       method: 'GET',
       url: app.reverse('newSession'),
     });
-
     expect(response.statusCode).toBe(200);
 
     const responseSignIn = await app.inject({
       method: 'POST',
       url: app.reverse('session'),
       payload: {
-        data: testData.users.existing,
+        data: {
+          email: user.email,
+          password: user.password,
+        },
       },
     });
 
     expect(responseSignIn.statusCode).toBe(302);
-    // после успешной аутентификации получаем куки из ответа,
-    // они понадобятся для выполнения запросов на маршруты требующие
-    // предварительную аутентификацию
+
     const [sessionCookie] = responseSignIn.cookies;
     const { name, value } = sessionCookie;
     const cookie = { [name]: value };
@@ -52,7 +56,6 @@ describe('test session', () => {
     const responseSignOut = await app.inject({
       method: 'DELETE',
       url: app.reverse('session'),
-      // используем полученные ранее куки
       cookies: cookie,
     });
 
