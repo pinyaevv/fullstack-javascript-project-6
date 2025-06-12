@@ -7,7 +7,7 @@ export default {
       session: {
         create: {
           success: 'Вы вошли в систему',
-          error: 'Неверный email или пароль',
+          error: 'Неправильный email или пароль',
         },
         delete: {
           success: 'Вы вышли из системы',
@@ -16,7 +16,7 @@ export default {
       users: {
         accessDenied: 'Доступ запрещён',
         create: {
-          error: 'Не удалось зарегистрироваться',
+          error: 'Ошибка при регистрации',
           success: 'Пользователь успешно зарегистрирован',
         },
         update: {
@@ -28,12 +28,13 @@ export default {
         },
       },
       statuses: {
+        new: {
+          header: 'Создание нового статуса',
+          submit: 'Отправить',
+        },
         create: {
           success: 'Статус успешно создан',
           error: 'Ошибка при создании статуса',
-        },
-        edit: {
-          notFound: 'Статус не найден',
         },
         update: {
           success: 'Статус успешно обновлён',
@@ -49,9 +50,9 @@ export default {
     layouts: {
       application: {
         users: 'Пользователи',
-        signIn: 'Вход',
+        signIn: 'Войти',
         signUp: 'Регистрация',
-        signOut: 'Выход',
+        signOut: 'Выйти',
         statuses: 'Статусы',
       },
     },
@@ -77,8 +78,8 @@ export default {
       },
       welcome: {
         index: {
-          hello: 'Привет от Хекслета!',
-          description: 'Онлайн-школа программирования',
+          hello: 'Привет от Hexlet!',
+          description: 'Онлайн школа программирования',
           more: 'Узнать больше',
         },
       },
@@ -87,6 +88,73 @@ export default {
         description: 'Организуйте свои задачи эффективно и без стресса.',
         getStarted: 'Начать',
       },
+      tasks: {
+        index: {
+          title: 'Задачи',
+          new: 'Создать задачу',
+          id: 'ID',
+          name: 'Название',
+          status: 'Статус',
+          creator: 'Создатель',
+          createdAt: 'Дата создания',
+          edit: 'Редактировать',
+          delete: 'Удалить',
+          confirm: 'Вы уверены, что хотите удалить эту задачу?',
+        },
+        new: {
+          title: 'Новая задача',
+          submit: 'Создать задачу',
+          form: {
+            name: 'Название',
+            description: 'Описание',
+            status: 'Статус',
+          },
+        },
+        edit: {
+          title: 'Редактирование задачи',
+          submit: 'Сохранить изменения',
+          form: {
+            name: 'Название',
+            description: 'Описание',
+            status: 'Статус',
+          },
+        },
+        show: {
+          title: 'Детали задачи',
+          name: 'Название',
+          description: 'Описание',
+          status: 'Статус',
+          creator: 'Создатель',
+          createdAt: 'Дата создания',
+          edit: 'Редактировать',
+        },
+      },
     },
+    statuses: {
+      index: {
+        id: 'ID',
+        header: 'Статусы',
+        new: 'Создать статус',
+        name: 'Название',
+        createdAt: 'Дата создания',
+        edit: 'Изменить',
+        delete: 'Удалить',
+        confirm: 'Вы уверены, что хотите удалить этот статус?',
+      },
+    },
+    tasks: {
+      title: 'Задачи',
+      create: 'Задача создана успешно',
+      updated: 'Задача обновлена успешно',
+      deleted: 'Задача удалена успешно',
+      error: 'Ошибка при обработке задачи',
+      deleteDenied: 'Вы не можете удалить эту задачу',
+      name: 'Название',
+      status: 'Статус',
+      creator: 'Создатель',
+      executor: 'Исполнитель',
+    },
+    actions: 'Действия',
+    edit: 'Редактировать',
   },
 };

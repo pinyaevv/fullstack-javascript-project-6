@@ -1,9 +1,7 @@
-import BaseModel from './BaseModel.cjs';
+import BaseModel from './BaseModel.js';
 
-class TaskStatus extends BaseModel {
+export default class TaskStatus extends BaseModel {
   static get tableName() {
     return 'task_statuses';
   }
 }
-
-export default TaskStatus;

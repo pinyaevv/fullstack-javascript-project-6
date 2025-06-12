@@ -1,6 +1,6 @@
 // @ts-check
 import { faker } from '@faker-js/faker';
-import { encrypt } from '../../server/lib/secure.cjs';
+import { encrypt } from '../../server/lib/secure.js';
 
 export const buildUser = (overrides = {}) => ({
   email: faker.internet.email(),

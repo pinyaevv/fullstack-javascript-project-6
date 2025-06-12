@@ -1,0 +1,24 @@
+extends ../layouts/application.pug
+
+block header
+  | #{t('views.tasks.show.title')}
+
+block content
+  ul.list-group
+    li.list-group-item
+      strong= t('views.tasks.show.name') + ': '
+      | #{task.name}
+    li.list-group-item
+      strong= t('views.tasks.show.description') + ': '
+      | #{task.description}
+    li.list-group-item
+      strong= t('views.tasks.show.status') + ': '
+      | #{task.status && task.status.name}
+    li.list-group-item
+      strong= t('views.tasks.show.creator') + ': '
+      | #{task.creator && task.creator.email}
+    li.list-group-item
+      strong= t('views.tasks.show.createdAt') + ': '
+      | #{formatDate(task.createdAt)}
+
+  a.btn.btn-outline-secondary.mt-3(href=route('tasks.edit', { id: task.id }))= t('views.tasks.show.edit')

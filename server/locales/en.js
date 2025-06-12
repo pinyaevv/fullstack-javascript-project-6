@@ -54,6 +54,7 @@ export default {
         signUp: 'Register',
         signOut: 'Logout',
         statuses: 'Statuses',
+        tasks: 'Tasks',
       },
     },
     views: {
@@ -101,5 +102,48 @@ export default {
         confirm: 'Are you sure you want to delete this status?',
       },
     },
+
+    tasks: {
+      index: {
+        title: 'Tasks',
+        new: 'Create task',
+        id: 'ID',
+        name: 'Name',
+        status: 'Status',
+        creator: 'Creator',
+        createdAt: 'Created at',
+        edit: 'Edit',
+        delete: 'Delete',
+        confirm: 'Are you sure you want to delete this task?',
+      },
+      new: {
+        title: 'New Task',
+        submit: 'Create task',
+        form: {
+          name: 'Name',
+          description: 'Description',
+          status: 'Status',
+        },
+      },
+      edit: {
+        title: 'Edit Task',
+        submit: 'Save changes',
+        form: {
+          name: 'Name',
+          description: 'Description',
+          status: 'Status',
+        },
+      },
+      show: {
+        title: 'Task details',
+        name: 'Name',
+        description: 'Description',
+        status: 'Status',
+        creator: 'Creator',
+        createdAt: 'Created at',
+        edit: 'Edit',
+      },
+    },
+
   },
 };

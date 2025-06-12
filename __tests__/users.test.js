@@ -4,7 +4,7 @@ import _ from 'lodash';
 import fastify from 'fastify';
 
 import init from '../server/plugin.js';
-import { verify } from '../server/lib/secure.cjs';
+import { verify } from '../server/lib/secure.js';
 import prepareData from './helpers/index.js';
 import { buildUser } from './factories/userFactory.js';
 

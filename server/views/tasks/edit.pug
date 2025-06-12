@@ -1,0 +1,11 @@
+extends ../layouts/application.pug
+
+block header
+  | #{t('views.tasks.edit.title')}
+
+block content
+  +formFor(task, { action: route('tasks.update', { id: task.id }), method: 'PATCH' })
+    +input(task, 'name', errors)(type="text" label=t('views.tasks.form.name'))
+    +input(task, 'description', errors)(type="text" label=t('views.tasks.form.description'))
+    +input(task, 'statusId', errors)(type="number" label=t('views.tasks.form.status'))
+    +submit()(value=t('views.tasks.edit.submit'))

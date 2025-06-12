@@ -1,0 +1,32 @@
+extends ../layouts/application.pug
+
+block header
+  | #{t('views.tasks.index.title')}
+
+block content
+  a.btn.btn-primary(href=route('tasks.new'))= t('views.tasks.index.new')
+
+  table.table.mt-3
+    thead
+      tr
+        th= t('views.tasks.index.id')
+        th= t('views.tasks.index.name')
+        th= t('views.tasks.index.status')
+        th= t('views.tasks.index.creator')
+        th= t('views.tasks.index.createdAt')
+        th
+    tbody
+      each task in tasks
+        tr
+          td= task.id
+          td
+            a(href=route('tasks.show', { id: task.id }))= task.name
+          td= task.status && task.status.name
+          td= task.creator && task.creator.email
+          td= formatDate(task.createdAt)
+          td
+            a.btn.btn-sm.btn-outline-primary.me-2(href=route('tasks.edit', { id: task.id }))= t('views.tasks.index.edit')
+            +buttonTo(route('tasks.delete', { id: task.id }), 'delete')(
+              class='btn btn-sm btn-outline-danger',
+              onclick="return confirm('#{t('views.tasks.index.confirm')}');"
+            )= t('views.tasks.index.delete')

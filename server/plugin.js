@@ -61,7 +61,7 @@ const setUpStaticAssets = (app) => {
   });
 };
 
-const setupLocalization = async () => {
+const setupLocalization = async (app) => {
   await i18next
     .init({
       lng: 'en',
@@ -72,6 +72,7 @@ const setupLocalization = async () => {
         en,
       },
     });
+  app.decorate('i18n', i18next);
 };
 
 const addHooks = (app) => {
@@ -164,7 +165,7 @@ export const options = {
 export default async (app, _options) => {
   await registerPlugins(app);
 
-  await setupLocalization();
+  await setupLocalization(app);
   setUpViews(app);
   setUpStaticAssets(app);
   app.decorateRequest('t', null);
@@ -172,8 +173,6 @@ export default async (app, _options) => {
     req.t = i18next.t.bind(i18next);
   });
   addHooks(app);
-  if (!app.hasRoute('GET', '/')) {
-    addRoutes(app);
-  }
+  addRoutes(app);
   return app;
 };

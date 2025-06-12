@@ -1,6 +1,6 @@
 // @ts-check
 import i18next from 'i18next';
-import { encrypt } from '../lib/secure.cjs';
+import { encrypt } from '../lib/secure.js';
 
 export default (app) => {
   app

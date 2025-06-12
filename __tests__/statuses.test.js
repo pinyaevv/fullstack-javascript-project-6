@@ -19,9 +19,6 @@ describe('Task statuses CRUD', () => {
   let cookies;
 
   beforeEach(async () => {
-    if (app) {
-      await app.close();
-    }
     app = fastify({ logger: false });
     await init(app);
     knex = /** @type {import('knex').Knex} */ (app.objection.knex);
@@ -107,6 +104,7 @@ describe('Task statuses CRUD', () => {
   });
 
   afterEach(async () => {
+    await knex.migrate.rollback();
     await app.close();
   });
 });
