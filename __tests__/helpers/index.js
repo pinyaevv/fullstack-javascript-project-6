@@ -1,12 +1,16 @@
 // @ts-check
 
-import { buildUserWithHash } from '../factories/userFactory.js';
+import { buildUserWithPassword } from '../factories/userFactory.js';
 
 const prepareData = async (app, options = {}) => {
   const { knex } = app.objection;
 
-  const users = options.users ?? [await buildUserWithHash(), await buildUserWithHash()];
-  await knex('users').insert(users);
+  const userPairs = options.users ?? [
+    buildUserWithPassword(),
+    buildUserWithPassword(),
+  ];
+
+  await knex('users').insert(userPairs.map(({ hashed }) => hashed));
 
   const taskStatuses = [
     { name: 'open' },
@@ -16,7 +20,8 @@ const prepareData = async (app, options = {}) => {
   await knex('task_statuses').insert(taskStatuses);
 
   return {
-    users,
+    users: userPairs.map(({ plain }) => plain),
+    taskStatuses,
   };
 };
 

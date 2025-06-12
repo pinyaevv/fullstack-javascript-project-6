@@ -4,12 +4,13 @@ import fastify from 'fastify';
 import { jest } from '@jest/globals';
 import init from '../server/plugin.js';
 import prepareData from './helpers/index.js';
-import { buildUser } from './factories/userFactory.js';
+import { buildUserWithPassword } from './factories/userFactory.js';
 
 jest.setTimeout(30000);
 
 describe('test session', () => {
   let app;
+  /** @type {import('knex').Knex} */
   let knex;
   let user;
 
@@ -20,13 +21,13 @@ describe('test session', () => {
     });
 
     await init(app);
-    knex = app.objection.knex;
-
+    knex = /** @type {import('knex').Knex} */ (app.objection.knex);
     await knex.migrate.latest();
 
-    user = await buildUser(app);
+    const { plain, hashed } = buildUserWithPassword();
+    user = plain;
 
-    await prepareData(app, { users: [user] });
+    await prepareData(app, { users: [{ plain, hashed }] });
   });
 
   it('test sign in / sign out', async () => {

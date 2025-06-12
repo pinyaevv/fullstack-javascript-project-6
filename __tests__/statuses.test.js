@@ -2,27 +2,37 @@
 import fastify from 'fastify';
 
 import init from '../server/plugin.js';
-import { buildUser } from './factories/userFactory.js';
+import { buildUserWithPassword } from './factories/userFactory.js';
 import prepareData from './helpers/index.js';
+
+/**
+ * @typedef {import('objection').Model & { id: number, name: string }} TaskStatus
+ */
 
 describe('Task statuses CRUD', () => {
   let app;
+  /** @type {import('knex').Knex} */
   let knex;
+  /** @type {any} */
   let models;
   let user;
   let cookies;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
+    if (app) {
+      await app.close();
+    }
     app = fastify({ logger: false });
     await init(app);
-    knex = app.objection.knex;
-    models = app.objection.models;
+    knex = /** @type {import('knex').Knex} */ (app.objection.knex);
+    models = /** @type {any} */ (app.objection.models);
 
     await knex.migrate.latest();
-    await prepareData(app);
 
-    user = buildUser();
-    await models.user.query().insert(user);
+    const { plain, hashed } = buildUserWithPassword();
+    user = plain;
+
+    await prepareData(app, { users: [{ plain, hashed }] });
 
     const login = await app.inject({
       method: 'POST',
@@ -96,8 +106,7 @@ describe('Task statuses CRUD', () => {
     expect(deleted).toBeUndefined();
   });
 
-  afterAll(async () => {
-    await knex.migrate.rollback();
+  afterEach(async () => {
     await app.close();
   });
 });

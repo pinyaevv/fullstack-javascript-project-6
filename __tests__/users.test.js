@@ -10,6 +10,7 @@ import { buildUser } from './factories/userFactory.js';
 
 describe('test users CRUD', () => {
   let app;
+  /** @type {import('knex').Knex} */
   let knex;
   let models;
   let testUsers;
@@ -21,12 +22,21 @@ describe('test users CRUD', () => {
     });
 
     await init(app);
-    knex = app.objection.knex;
-    models = app.objection.models;
 
+    knex = /** @type {import('knex').Knex} */ (app.objection.knex);
+    models = app.objection.models;
+  });
+
+  beforeEach(async () => {
+    await knex.migrate.rollback(undefined, true);
     await knex.migrate.latest();
     const data = await prepareData(app);
     testUsers = data.users;
+  });
+
+  afterAll(async () => {
+    await knex.migrate.rollback(undefined, true);
+    await app.close();
   });
 
   it('index', async () => {
@@ -61,7 +71,7 @@ describe('test users CRUD', () => {
     expect(verify(params.password, user.passwordDigest)).toBe(true);
   });
 
-  test('update user (self)', async () => {
+  it('update user (self)', async () => {
     const existing = testUsers[0];
 
     const loginResponse = await app.inject({
@@ -92,11 +102,7 @@ describe('test users CRUD', () => {
     expect(response.statusCode).toBe(302);
 
     const updatedUser = await models.user.query().findById(user.id);
-    expect(updatedUser).toMatchObject({
-      firstName: 'UpdatedName',
-      lastName: 'UpdatedLast',
-      email: existing.email,
-    });
+    expect(updatedUser).toMatchObject(newData);
   });
 
   it('fail to update another user', async () => {
@@ -148,7 +154,6 @@ describe('test users CRUD', () => {
     const cookies = { [sessionCookie.name]: sessionCookie.value };
 
     const user = await models.user.query().findOne({ email: existing.email });
-    expect(user).not.toBeNull();
 
     const deleteResponse = await app.inject({
       method: 'DELETE',
@@ -176,7 +181,6 @@ describe('test users CRUD', () => {
     const cookies = { [sessionCookie.name]: sessionCookie.value };
 
     const user = await models.user.query().findOne({ email: existing.email });
-    expect(user).not.toBeNull();
 
     const deleteResponse = await app.inject({
       method: 'DELETE',
@@ -188,10 +192,5 @@ describe('test users CRUD', () => {
 
     const stillExists = await models.user.query().findById(user.id);
     expect(stillExists).not.toBeUndefined();
-  });
-
-  afterAll(async () => {
-    await knex.migrate.rollback();
-    await app.close();
   });
 });

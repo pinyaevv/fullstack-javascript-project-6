@@ -35,3 +35,4 @@ rules:
         - _t
         - __dirname
         - __filename
+  camelcase: [error, { allow: [password_digest] }]

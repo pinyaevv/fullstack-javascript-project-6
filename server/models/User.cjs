@@ -25,17 +25,17 @@ module.exports = class User extends unique(BaseModel) {
   }
 
   set password(value) {
-    this._password = value;
+    this.plainPassword = value;
     this.passwordDigest = encrypt(value);
   }
 
   get password() {
-    return this._password;
+    return this.plainPassword;
   }
 
   $formatDatabaseJson(json) {
     const dbJson = super.$formatDatabaseJson(json);
-    delete dbJson._password;
+    delete dbJson.plainPassword;
     return dbJson;
   }
 

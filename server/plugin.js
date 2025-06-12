@@ -98,7 +98,6 @@ const addHooks = (app) => {
       formatDate: (date) => dayjs(date).format('YYYY-MM-DD HH:mm:ss'),
     };
 
-    // Метод для добавления flash-сообщений
     req.flash = (type, message) => {
       const current = req.session.get('flash') || {};
       if (!current[type]) current[type] = [];
@@ -107,7 +106,6 @@ const addHooks = (app) => {
     };
   });
 };
-
 
 const registerPlugins = async (app) => {
   await app.register(fastifySensible);
@@ -174,6 +172,8 @@ export default async (app, _options) => {
     req.t = i18next.t.bind(i18next);
   });
   addHooks(app);
-  addRoutes(app);
+  if (!app.hasRoute('GET', '/')) {
+    addRoutes(app);
+  }
   return app;
 };
