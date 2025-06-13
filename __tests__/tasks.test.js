@@ -62,10 +62,10 @@ describe('test tasks CRUD', () => {
   it('GET /tasks/new - редирект для неавторизованных', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('newTask'),
+      url: app.reverse('tasks.new'),
     });
     expect(response.statusCode).toBe(302);
-    expect(response.headers.location).toBe(app.reverse('newSession'));
+    expect(response.headers.location).toBe(app.reverse('root'));
   });
 
   it('GET /tasks/new - доступ для авторизованных', async () => {
@@ -81,7 +81,7 @@ describe('test tasks CRUD', () => {
 
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('newTask'),
+      url: app.reverse('tasks.new'),
       cookies,
     });
     expect(response.statusCode).toBe(200);
@@ -134,7 +134,7 @@ describe('test tasks CRUD', () => {
     });
 
     expect(response.statusCode).toBe(302);
-    expect(response.headers.location).toBe(app.reverse('newSession'));
+    expect(response.headers.location).toBe(app.reverse('root'));
   });
 
   it('GET /tasks/:id - просмотр задачи', async () => {
@@ -142,7 +142,7 @@ describe('test tasks CRUD', () => {
 
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('task', { id: task.id }),
+      url: app.reverse('tasks.show', { id: task.id }),
     });
     expect(response.statusCode).toBe(200);
     expect(response.body).toContain(task.name);
@@ -153,10 +153,10 @@ describe('test tasks CRUD', () => {
 
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('editTask', { id: task.id }),
+      url: app.reverse('tasks.edit', { id: task.id }),
     });
     expect(response.statusCode).toBe(302);
-    expect(response.headers.location).toBe(app.reverse('newSession'));
+    expect(response.headers.location).toBe(app.reverse('root'));
   });
 
   it('GET /tasks/:id/edit - доступ для создателя задачи', async () => {
@@ -173,7 +173,7 @@ describe('test tasks CRUD', () => {
 
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('editTask', { id: task.id }),
+      url: app.reverse('tasks.edit', { id: task.id }),
       cookies,
     });
     expect(response.statusCode).toBe(200);
@@ -195,12 +195,12 @@ describe('test tasks CRUD', () => {
 
     const response = await app.inject({
       method: 'PATCH',
-      url: app.reverse('updateTask', { id: task.id }),
+      url: app.reverse('tasks.update', { id: task.id }),
       payload: { data: newData },
       cookies,
     });
     expect(response.statusCode).toBe(302);
-    expect(response.headers.location).toBe(app.reverse('tasks'));
+    expect(response.headers.location).toBe(app.reverse('/tasks/1/edit'));
 
     const updated = await models.task.query().findById(task.id);
     expect(updated.name).toBe(newData.name);
@@ -221,7 +221,7 @@ describe('test tasks CRUD', () => {
 
     const response = await app.inject({
       method: 'PATCH',
-      url: app.reverse('updateTask', { id: task.id }),
+      url: app.reverse('tasks.update', { id: task.id }),
       payload: { data: newData },
       cookies,
     });
@@ -245,7 +245,7 @@ describe('test tasks CRUD', () => {
 
     const response = await app.inject({
       method: 'DELETE',
-      url: app.reverse('deleteTask', { id: task.id }),
+      url: app.reverse('tasks.delete', { id: task.id }),
       cookies,
     });
     expect(response.statusCode).toBe(302);
@@ -269,7 +269,7 @@ describe('test tasks CRUD', () => {
 
     const response = await app.inject({
       method: 'DELETE',
-      url: app.reverse('deleteTask', { id: task.id }),
+      url: app.reverse('tasks.delete', { id: task.id }),
       cookies,
     });
     expect(response.statusCode).toBe(302);

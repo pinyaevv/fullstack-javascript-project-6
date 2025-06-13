@@ -45,8 +45,22 @@ export default {
           error: 'Ошибка при удалении статуса',
         },
       },
+      tasks: {
+        title: 'Задачи',
+        create: 'Задача создана успешно',
+        updated: 'Задача обновлена успешно',
+        deleted: 'Задача удалена успешно',
+        error: 'Ошибка при обработке задачи',
+        deleteDenied: 'Вы не можете удалить эту задачу',
+        name: 'Название',
+        status: 'Статус',
+        creator: 'Создатель',
+        executor: 'Исполнитель',
+      },
+
       authError: 'Доступ запрещён! Пожалуйста, войдите в систему',
     },
+
     layouts: {
       application: {
         users: 'Пользователи',
@@ -56,6 +70,7 @@ export default {
         statuses: 'Статусы',
       },
     },
+
     views: {
       session: {
         new: {
@@ -88,48 +103,8 @@ export default {
         description: 'Организуйте свои задачи эффективно и без стресса.',
         getStarted: 'Начать',
       },
-      tasks: {
-        index: {
-          title: 'Задачи',
-          new: 'Создать задачу',
-          id: 'ID',
-          name: 'Название',
-          status: 'Статус',
-          creator: 'Создатель',
-          createdAt: 'Дата создания',
-          edit: 'Редактировать',
-          delete: 'Удалить',
-          confirm: 'Вы уверены, что хотите удалить эту задачу?',
-        },
-        new: {
-          title: 'Новая задача',
-          submit: 'Создать задачу',
-          form: {
-            name: 'Название',
-            description: 'Описание',
-            status: 'Статус',
-          },
-        },
-        edit: {
-          title: 'Редактирование задачи',
-          submit: 'Сохранить изменения',
-          form: {
-            name: 'Название',
-            description: 'Описание',
-            status: 'Статус',
-          },
-        },
-        show: {
-          title: 'Детали задачи',
-          name: 'Название',
-          description: 'Описание',
-          status: 'Статус',
-          creator: 'Создатель',
-          createdAt: 'Дата создания',
-          edit: 'Редактировать',
-        },
-      },
     },
+
     statuses: {
       index: {
         id: 'ID',
@@ -141,19 +116,57 @@ export default {
         delete: 'Удалить',
         confirm: 'Вы уверены, что хотите удалить этот статус?',
       },
+      edit: {
+        header: 'Изменение статуса',
+        submit: 'Изменить',
+      },
     },
+
     tasks: {
-      title: 'Задачи',
-      create: 'Задача создана успешно',
-      updated: 'Задача обновлена успешно',
-      deleted: 'Задача удалена успешно',
-      error: 'Ошибка при обработке задачи',
-      deleteDenied: 'Вы не можете удалить эту задачу',
-      name: 'Название',
-      status: 'Статус',
-      creator: 'Создатель',
-      executor: 'Исполнитель',
+      index: {
+        title: 'Задачи',
+        new: 'Создать задачу',
+        id: 'ID',
+        name: 'Название',
+        status: 'Статус',
+        creator: 'Создатель',
+        createdAt: 'Дата создания',
+        edit: 'Редактировать',
+        delete: 'Удалить',
+        confirm: 'Вы уверены, что хотите удалить эту задачу?',
+      },
+      new: {
+        title: 'Новая задача',
+        submit: 'Создать задачу',
+        form: {
+          name: 'Название',
+          description: 'Описание',
+          status: 'Статус',
+          selectStatus: '',
+          executor: 'Исполнитель',
+          selectExecutor: '',
+        },
+      },
+      edit: {
+        title: 'Редактирование задачи',
+        submit: 'Сохранить изменения',
+        form: {
+          name: 'Название',
+          description: 'Описание',
+          status: 'Статус',
+        },
+      },
+      show: {
+        title: 'Детали задачи',
+        name: 'Название',
+        description: 'Описание',
+        status: 'Статус',
+        creator: 'Создатель',
+        createdAt: 'Дата создания',
+        edit: 'Редактировать',
+      },
     },
+
     actions: 'Действия',
     edit: 'Редактировать',
   },

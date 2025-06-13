@@ -26,6 +26,7 @@ import getHelpers from './helpers/index.js';
 import knexConfig from '../knexfile.js';
 import models from './models/index.js';
 import FormStrategy from './lib/passportStrategies/FormStrategy.js';
+import labelRoutes from './routes/labels.js';
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
 
@@ -174,5 +175,6 @@ export default async (app, _options) => {
   });
   addHooks(app);
   addRoutes(app);
+  await app.register(labelRoutes);
   return app;
 };

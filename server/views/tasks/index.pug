@@ -1,19 +1,19 @@
 extends ../layouts/application.pug
 
 block header
-  | #{t('views.tasks.index.title')}
+  | #{t('tasks.index.title')}
 
 block content
-  a.btn.btn-primary(href=route('tasks.new'))= t('views.tasks.index.new')
+  a.btn.btn-primary(href=route('tasks.new'))= t('tasks.index.new')
 
   table.table.mt-3
     thead
       tr
-        th= t('views.tasks.index.id')
-        th= t('views.tasks.index.name')
-        th= t('views.tasks.index.status')
-        th= t('views.tasks.index.creator')
-        th= t('views.tasks.index.createdAt')
+        th= t('tasks.index.id')
+        th= t('tasks.index.name')
+        th= t('tasks.index.status')
+        th= t('tasks.index.creator')
+        th= t('tasks.index.createdAt')
         th
     tbody
       each task in tasks
@@ -25,8 +25,8 @@ block content
           td= task.creator && task.creator.email
           td= formatDate(task.createdAt)
           td
-            a.btn.btn-sm.btn-outline-primary.me-2(href=route('tasks.edit', { id: task.id }))= t('views.tasks.index.edit')
-            +buttonTo(route('tasks.delete', { id: task.id }), 'delete')(
+            a.btn.btn-sm.btn-outline-primary.me-2(href=route('tasks.edit', { id: task.id }))= t('tasks.index.edit')
+            +buttonTo(route('tasks.delete', { id: task.id }), 'delete', t('tasks.index.delete'))(
               class='btn btn-sm btn-outline-danger',
-              onclick="return confirm('#{t('views.tasks.index.confirm')}');"
-            )= t('views.tasks.index.delete')
+              onclick="return confirm('#{t('tasks.index.confirm')}');"
+            )

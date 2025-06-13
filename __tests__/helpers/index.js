@@ -11,6 +11,12 @@ const prepareData = async (app, options = {}) => {
   ];
 
   await knex('users').insert(userPairs.map(({ hashed }) => hashed));
+  const insertedUsers = await knex('users').select();
+
+  // Присвоим id из базы пользователям `plain`
+  insertedUsers.forEach((insertedUser, index) => {
+    userPairs[index].plain.id = insertedUser.id;
+  });
 
   const taskStatuses = [
     { name: 'open' },
@@ -18,10 +24,11 @@ const prepareData = async (app, options = {}) => {
     { name: 'closed' },
   ];
   await knex('task_statuses').insert(taskStatuses);
+  const insertedStatuses = await knex('task_statuses').select();
 
   return {
     users: userPairs.map(({ plain }) => plain),
-    taskStatuses,
+    taskStatuses: insertedStatuses,
   };
 };
 

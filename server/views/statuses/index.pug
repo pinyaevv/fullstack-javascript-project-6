@@ -20,7 +20,12 @@ block content
           td= formatDate(status.createdAt)
           td
             a.btn.btn-sm.btn-outline-primary.me-2(href=route('statuses.edit', { id: status.id }))= t('statuses.index.edit')
-            +buttonTo(route('statuses.delete', { id: status.id }), 'delete')(
-              class='btn btn-sm btn-outline-danger',
-              onclick="return confirm('#{t('statuses.index.confirm')}');"
-            )= t('statuses.index.delete')
+            +buttonTo(
+              route('statuses.delete', { id: status.id }),
+              'delete',
+              t('statuses.index.delete'),
+              {
+                class: 'btn btn-sm btn-outline-danger',
+                onclick: `return confirm('${t('statuses.index.confirm')}');`
+              }
+            )

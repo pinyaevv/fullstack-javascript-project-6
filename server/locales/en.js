@@ -3,6 +3,7 @@
 export default {
   translation: {
     appName: 'Task Manager',
+
     flash: {
       session: {
         create: {
@@ -45,8 +46,22 @@ export default {
           error: 'Error deleting status',
         },
       },
+      tasks: {
+        title: 'Tasks',
+        create: 'Task created successfully',
+        updated: 'Task updated successfully',
+        deleted: 'Task deleted successfully',
+        error: 'Error processing task',
+        deleteDenied: 'You cannot delete this task',
+        name: 'Name',
+        status: 'Status',
+        creator: 'Creator',
+        executor: 'Executor',
+      },
+
       authError: 'Access denied! Please login',
     },
+
     layouts: {
       application: {
         users: 'Users',
@@ -57,6 +72,7 @@ export default {
         tasks: 'Tasks',
       },
     },
+
     views: {
       session: {
         new: {
@@ -90,16 +106,21 @@ export default {
         getStarted: 'Get Started',
       },
     },
+
     statuses: {
       index: {
         id: 'ID',
         header: 'Statuses',
-        new: 'Create status',
+        new: 'Create',
         name: 'Name',
         createdAt: 'Created at',
         edit: 'Change',
         delete: 'Delete',
         confirm: 'Are you sure you want to delete this status?',
+      },
+      edit: {
+        header: 'Change of status',
+        submit: 'Сhange',
       },
     },
 
@@ -123,6 +144,9 @@ export default {
           name: 'Name',
           description: 'Description',
           status: 'Status',
+          selectStatus: '',
+          executor: 'Executor',
+          selectExecutor: '',
         },
       },
       edit: {

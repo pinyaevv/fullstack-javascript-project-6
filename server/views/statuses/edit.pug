@@ -7,4 +7,4 @@ block content
   +formFor(status, { action: route('statuses.update', { id: status.id }), method: 'POST' })
     input(type='hidden', name='_method', value='patch')
     +input(status, 'name', errors)
-    +submit({ value: t('statuses.edit.submit') })
+    +submit(t('statuses.edit.submit'))

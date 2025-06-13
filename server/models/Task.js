@@ -2,6 +2,7 @@ import { snakeCaseMappers } from 'objection';
 import BaseModel from './BaseModel.js';
 import User from './User.js';
 import TaskStatus from './TaskStatus.js';
+import Label from './Label.js';
 
 export default class Task extends BaseModel {
   static get tableName() {
@@ -51,6 +52,18 @@ export default class Task extends BaseModel {
         join: {
           from: 'tasks.executorId',
           to: 'users.id',
+        },
+      },
+      labels: {
+        relation: BaseModel.ManyToManyRelation,
+        modelClass: Label,
+        join: {
+          from: 'tasks.id',
+          through: {
+            from: 'task_labels.task_id',
+            to: 'task_labels.label_id',
+          },
+          to: 'labels.id',
         },
       },
     };
