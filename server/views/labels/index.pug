@@ -1,17 +1,17 @@
 extends ../layouts/application.pug
 
 block content
-  h1= t('labels.list')
+  h1= t('views.labels.index.header')
 
-  a.btn.btn-primary(href=route('newLabel'))= t('labels.new')
+  a.btn.btn-primary(href=route('newLabel'))= t('views.labels.index.new')
 
   if labels.length
     table.table.table-bordered.mt-3
       thead
         tr
-          th= t('labels.index.id')
-          th= t('labels.name')
-          th= t('labels.index.createdAt')
+          th= t('views.labels.index.id')
+          th= t('views.labels.index.name')
+          th= t('views.labels.index.createdAt')
           th
       tbody
         each label in labels
@@ -20,9 +20,9 @@ block content
             td= label.name
             td= formatDate(label.createdAt)
             td.text-end
-              a.btn.btn-outline-primary.btn-sm(href=route('editLabel', { id: label.id }))= t('actions.edit')
+              a.btn.btn-outline-primary.btn-sm(href=route('editLabel', { id: label.id }))= t('views.labels.actions.edit')
               form(method='post', action=route('labels.delete', { id: label.id }))
                 input(type='hidden', name='_method', value='delete')
-                button.btn.btn-outline-danger.btn-sm(type='submit')= t('actions.delete')
+                button.btn.btn-outline-danger.btn-sm(type='submit')= t('views.labels.actions.delete')
   else
-    p.text-muted.mt-3= t('labels.empty')
+    p.text-muted.mt-3= t('views.labels.index.empty')

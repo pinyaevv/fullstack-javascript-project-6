@@ -3,9 +3,9 @@ include ../mixins/forms.pug
 include _form.pug
 
 block content
-  h1= t('labels.editLabel')
+  h1= t('views.labels.edit.header')
 
-  form(method="post", action=route('updateLabel', { id: label.id }))
+  form(method="post", action=route('labels.update', { id: label.id }))
     input(type='hidden', name='_method', value='patch')
     +labelForm(label, errors)
-    +submit(t('actions.update'))
+    +submit(t('views.labels.actions.change'))

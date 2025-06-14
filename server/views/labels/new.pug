@@ -3,8 +3,8 @@ include ../mixins/forms.pug
 include _form.pug
 
 block content
-  h1= t('labels.createLabel')
+  h1= t('views.labels.new.createLabel')
 
   +formFor(label, { action: route('labels'), method: 'POST' })
     +labelForm(label, errors)
-    +submit(t('actions.create'))
+    +submit(t('views.labels.actions.create'))

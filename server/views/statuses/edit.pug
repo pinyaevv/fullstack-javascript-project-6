@@ -1,10 +1,10 @@
 extends ../layouts/application.pug
 
 block header
-  | #{t('statuses.edit.header')}
+  | #{t('views.statuses.edit.header')}
 
 block content
   +formFor(status, { action: route('statuses.update', { id: status.id }), method: 'POST' })
     input(type='hidden', name='_method', value='patch')
     +input(status, 'name', errors)
-    +submit(t('statuses.edit.submit'))
+    +submit(t('views.statuses.edit.submit'))

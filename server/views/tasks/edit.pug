@@ -1,29 +1,29 @@
 extends ../layouts/application.pug
 
 block content
-  h1= t('tasks.edit.title')
+  h1= t('views.tasks.edit.title')
 
   form(method="post" action=route('tasks.update', { id: task.id }) )
     input(type="hidden" name="_method" value="patch")
 
     .form-group
-      label(for="name")= t('tasks.new.form.name')
+      label(for="name")= t('views.tasks.edit.form.name')
       input#name.form-control(name="data[name]" required value=task.name)
       if errors.name
         each err in errors.name
           .invalid-feedback(style='display:block')= err
 
     .form-group
-      label(for="description")= t('tasks.new.form.description')
+      label(for="description")= t('views.tasks.edit.form.description')
       textarea#description.form-control(name="data[description]")= task.description
       if errors.description
         each err in errors.description
           .invalid-feedback(style='display:block')= err
 
     .form-group
-      label(for="statusId")= t('tasks.new.form.status')
+      label(for="statusId")= t('views.tasks.edit.form.status')
       select#statusId.form-control(name="data[statusId]" required)
-        option(value="") #{t('tasks.new.form.selectStatus')}
+        option(value="") #{t('views.tasks.new.edit.form.selectStatus')}
         each status in statuses
           option(
             value=status.id,
@@ -34,9 +34,9 @@ block content
           .invalid-feedback(style='display:block')= err
 
     .form-group
-      label(for="executorId")= t('tasks.new.form.executor')
+      label(for="executorId")= t('views.tasks.edit.form.executor')
       select#executorId.form-control(name="data[executorId]")
-        option(value="") #{t('tasks.new.form.selectExecutor')}
+        option(value="") #{t('views.tasks.edit.form.selectExecutor')}
         each user in users
           option(
             value=user.id,
@@ -47,7 +47,7 @@ block content
           .invalid-feedback(style='display:block')= err
     
     .form-group
-      label(for="labelIds")= t('labels.name')
+      label(for="labelIds")= t('views.tasks.edit.form.labels')
       each label in labels
         - const isChecked = task.labels?.some((l) => l.id === label.id);
         .form-check
@@ -55,4 +55,4 @@ block content
           label.form-check-label(for=`label-${label.id}`)= label.name
 
 
-    button.btn.btn-primary(type="submit")= t('views.edit')
+    button.btn.btn-primary(type="submit")= t('views.tasks.action.edit')

@@ -1,17 +1,17 @@
 extends ../layouts/application.pug
 
 block header
-  | #{t('statuses.index.header')}
+  | #{t('views.statuses.index.header')}
 
 block content
-  a.btn.btn-primary(href=route('statuses.new'))= t('statuses.index.new')
+  a.btn.btn-primary(href=route('statuses.new'))= t('views.statuses.index.new')
 
   table.table.mt-3
     thead
       tr
-        th= t('statuses.index.id')
-        th= t('statuses.index.name')
-        th= t('statuses.index.createdAt')
+        th= t('views.statuses.index.id')
+        th= t('views.statuses.index.name')
+        th= t('views.statuses.index.createdAt')
     tbody
       each status in statuses
         tr
@@ -19,13 +19,13 @@ block content
           td= status.name
           td= formatDate(status.createdAt)
           td
-            a.btn.btn-sm.btn-outline-primary.me-2(href=route('statuses.edit', { id: status.id }))= t('statuses.index.edit')
+            a.btn.btn-sm.btn-outline-primary.me-2(href=route('statuses.edit', { id: status.id }))= t('views.statuses.index.edit')
             +buttonTo(
               route('statuses.delete', { id: status.id }),
               'delete',
-              t('statuses.index.delete'),
+              t('views.statuses.index.delete'),
               {
                 class: 'btn btn-sm btn-outline-danger',
-                onclick: `return confirm('${t('statuses.index.confirm')}');`
+                onclick: `return confirm('${t('views.statuses.index.confirm')}');`
               }
             )

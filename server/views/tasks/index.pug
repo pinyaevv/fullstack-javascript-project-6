@@ -1,17 +1,17 @@
 extends ../layouts/application.pug
 
 block header
-  | #{t('tasks.index.title')}
+  | #{t('views.tasks.index.title')}
 
 block content
-  a.btn.btn-primary(href=route('tasks.new'))= t('tasks.index.new')
+  a.btn.btn-primary(href=route('tasks.new'))= t('views.tasks.action.new')
   
   form(method="GET", action=route('tasks'))
   .row.mb-3
     .col-md-3
-      label.form-label(for="statusId") #{t('tasks.filter.status')}
+      label.form-label(for="statusId") #{t('views.tasks.filter.status')}
       select.form-select(name="statusId", id="statusId")
-        option(value="") #{t('tasks.filter.all')}
+        option(value="") #{t('views.tasks.filter.all')}
         each status in statuses
           option(
             value=status.id
@@ -19,9 +19,9 @@ block content
           )= status.name
 
     .col-md-3
-      label.form-label(for="executorId") #{t('tasks.filter.executor')}
+      label.form-label(for="executorId") #{t('views.tasks.filter.executor')}
       select.form-select(name="executorId", id="executorId")
-        option(value="") #{t('tasks.filter.all')}
+        option(value="") #{t('views.tasks.filter.all')}
         each user in users
           option(
             value=user.id
@@ -29,9 +29,9 @@ block content
           )= user.name
 
     .col-md-3
-      label.form-label(for="labelId") #{t('tasks.filter.label')}
+      label.form-label(for="labelId") #{t('views.tasks.filter.label')}
       select.form-select(name="labelId", id="labelId")
-        option(value="") #{t('tasks.filter.all')}
+        option(value="") #{t('views.tasks.filter.all')}
         each label in labels
           option(
             value=label.id
@@ -41,18 +41,18 @@ block content
     .col-md-3.d-flex.align-items-center
       label.form-check-label.me-2(for="isCreatorUser")
         input.form-check-input(type="checkbox", name="isCreatorUser", id="isCreatorUser", checked=filterValues.isCreatorUser)
-        | #{t('tasks.filter.myTasksOnly')}
+        | #{t('views.tasks.filter.myTasksOnly')}
 
-  button.btn.btn-primary(type="submit") #{t('tasks.filter.submit')}
+  button.btn.btn-primary(type="submit") #{t('views.tasks.action.show')}
 
   table.table.mt-3
     thead
       tr
-        th= t('tasks.index.id')
-        th= t('tasks.index.name')
-        th= t('tasks.index.status')
-        th= t('tasks.index.creator')
-        th= t('tasks.index.createdAt')
+        th= t('views.tasks.index.id')
+        th= t('views.tasks.index.name')
+        th= t('views.tasks.index.status')
+        th= t('views.tasks.index.creator')
+        th= t('views.tasks.index.createdAt')
         th
     tbody
       each task in tasks
@@ -64,8 +64,8 @@ block content
           td= task.creator && task.creator.email
           td= formatDate(task.createdAt)
           td
-            a.btn.btn-sm.btn-outline-primary.me-2(href=route('tasks.edit', { id: task.id }))= t('tasks.index.edit')
-            +buttonTo(route('tasks.delete', { id: task.id }), 'delete', t('tasks.index.delete'))(
+            a.btn.btn-sm.btn-outline-primary.me-2(href=route('tasks.edit', { id: task.id }))= t('views.tasks.action.edit')
+            +buttonTo(route('tasks.delete', { id: task.id }), 'delete', t('views.tasks.action.delete'))(
               class='btn btn-sm btn-outline-danger',
-              onclick="return confirm('#{t('tasks.index.confirm')}');"
+              onclick="return confirm('#{t('views.tasks.index.confirm')}');"
             )

@@ -14,6 +14,7 @@ export default {
           success: 'You are logged out',
         },
       },
+
       users: {
         accessDenied: 'Access denied',
         create: {
@@ -28,6 +29,7 @@ export default {
           success: 'User successfully deleted',
         },
       },
+
       statuses: {
         new: {
           header: 'Create new status',
@@ -46,8 +48,8 @@ export default {
           error: 'Error deleting status',
         },
       },
+
       tasks: {
-        title: 'Tasks',
         create: 'Task created successfully',
         updated: 'Task updated successfully',
         deleted: 'Task deleted successfully',
@@ -70,6 +72,7 @@ export default {
         signOut: 'Logout',
         statuses: 'Statuses',
         tasks: 'Tasks',
+        labels: 'Labels',
       },
     },
 
@@ -80,6 +83,7 @@ export default {
           submit: 'Login',
         },
       },
+
       users: {
         id: 'ID',
         email: 'Email',
@@ -93,81 +97,113 @@ export default {
           submit: 'Save',
         },
       },
+
       welcome: {
         index: {
-          hello: 'Hello from Hexlet!',
+          hello: 'Hello!',
           description: 'Online programming school',
           more: 'Learn more',
         },
       },
+
       cover: {
         title: 'Task Manager',
         description: 'Organize your tasks effectively and stress-free.',
         getStarted: 'Get Started',
       },
-    },
 
-    statuses: {
-      index: {
-        id: 'ID',
-        header: 'Statuses',
-        new: 'Create',
-        name: 'Name',
-        createdAt: 'Created at',
-        edit: 'Change',
-        delete: 'Delete',
-        confirm: 'Are you sure you want to delete this status?',
-      },
-      edit: {
-        header: 'Change of status',
-        submit: 'Сhange',
-      },
-    },
-
-    tasks: {
-      index: {
-        title: 'Tasks',
-        new: 'Create task',
-        id: 'ID',
-        name: 'Name',
-        status: 'Status',
-        creator: 'Creator',
-        createdAt: 'Created at',
-        edit: 'Edit',
-        delete: 'Delete',
-        confirm: 'Are you sure you want to delete this task?',
-      },
-      new: {
-        title: 'New Task',
-        submit: 'Create task',
-        form: {
+      statuses: {
+        index: {
+          id: 'ID',
+          header: 'Statuses',
+          new: 'Create',
           name: 'Name',
-          description: 'Description',
+          createdAt: 'Created at',
+          edit: 'Change',
+          delete: 'Delete',
+        },
+        edit: {
+          header: 'Change of status',
+          submit: 'Сhange',
+        },
+      },
+
+      tasks: {
+        index: {
+          title: 'Tasks',
+          id: 'ID',
+          name: 'Name',
           status: 'Status',
-          selectStatus: '',
+          creator: 'Creator',
+          createdAt: 'Date of creation',
+        },
+
+        action: {
+          new: 'Create task',
+          show: 'Show',
+          edit: 'Change',
+          delete: 'Delete',
+        },
+
+        new: {
+          title: 'New Task',
+          submit: 'Create task',
+          form: {
+            name: 'Name',
+            description: 'Description',
+            status: 'Status',
+            selectStatus: '',
+            executor: 'Executor',
+            selectExecutor: '',
+          },
+        },
+
+        edit: {
+          title: 'Changing a task',
+          form: {
+            name: 'Name',
+            description: 'Description',
+            status: 'Status',
+            selectStatus: 'Select status',
+            executor: 'Executor',
+            selectExecutor: 'Select executor',
+            labels: 'Labels',
+          },
+        },
+
+        filter: {
+          status: 'Status',
           executor: 'Executor',
-          selectExecutor: '',
+          label: 'Label',
+          myTasksOnly: 'Just my tasks',
+          all: 'Creator',
         },
       },
-      edit: {
-        title: 'Edit Task',
-        submit: 'Save changes',
-        form: {
+
+      labels: {
+        index: {
+          header: 'Labels',
+          id: 'ID',
           name: 'Name',
-          description: 'Description',
-          status: 'Status',
+          createdAt: 'Date of creation',
+          new: 'Create label',
+          edit: 'Change',
+          delete: 'Delete',
+          empty: 'Empty',
         },
-      },
-      show: {
-        title: 'Task details',
-        name: 'Name',
-        description: 'Description',
-        status: 'Status',
-        creator: 'Creator',
-        createdAt: 'Created at',
-        edit: 'Edit',
+        actions: {
+          edit: 'Change',
+          delete: 'Delete',
+          create: 'Create',
+          change: 'Change',
+        },
+        new: {
+          createLabel: 'Creating a label',
+        },
+        edit: {
+          header: 'Change label',
+        },
       },
     },
-
   },
 };
