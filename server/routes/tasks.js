@@ -14,8 +14,9 @@ async function taskRoutes(app) {
     const task = {};
     const statuses = await app.objection.models.taskStatus.query();
     const users = await app.objection.models.user.query();
+    const labels = await app.objection.models.label.query();
     return reply.render('tasks/new', {
-      task, statuses, users, errors: {},
+      task, statuses, users, labels, errors: {}, labelIds: [],
     });
   });
 
@@ -25,7 +26,19 @@ async function taskRoutes(app) {
       data.creatorId = req.user.id;
       data.statusId = Number(data.statusId);
       data.executorId = Number(data.executorId);
-      await Task.query().insert(data);
+      let labelIds = [];
+
+      if (Array.isArray(data.labelIds)) {
+        labelIds = data.labelIds.map(Number);
+      } else if (data.labelIds) {
+        labelIds = [Number(data.labelIds)];
+      }
+
+      const task = await Task.query().insert(data);
+      if (labelIds.length > 0) {
+        await task.$relatedQuery('labels').relate(labelIds);
+      }
+
       req.flash('info', app.i18n.t('tasks.created'));
       return reply.redirect('/tasks');
     } catch (e) {
@@ -45,14 +58,19 @@ async function taskRoutes(app) {
   });
 
   app.get('/tasks/:id/edit', { preHandler: authGuard, name: 'tasks.edit' }, async (req, reply) => {
-    const task = await Task.query().findById(req.params.id);
+    const task = await Task.query().findById(req.params.id).withGraphFetched('labels');
+
     if (!task) {
       return reply.code(404).send();
     }
+
     const statuses = await app.objection.models.taskStatus.query();
     const users = await app.objection.models.user.query();
+    const labels = await app.objection.models.label.query();
+    const labelIds = task.labels.map((label) => label.id);
+
     return reply.render('tasks/edit', {
-      task, statuses, users, errors: {},
+      task, statuses, users, labels, labelIds, errors: {},
     });
   });
 
@@ -66,16 +84,31 @@ async function taskRoutes(app) {
         req.flash('error', app.i18n.t('tasks.updateDenied'));
         return reply.redirect('/tasks');
       }
+
       const {
-        name, description, statusId, executorId,
+        name, description, statusId, executorId, labelIds,
       } = req.body.data;
 
-      await Task.query().patchAndFetchById(req.params.id, {
+      const updatedTask = await Task.query().patchAndFetchById(req.params.id, {
         name,
         description,
         statusId: Number(statusId),
         executorId: executorId ? Number(executorId) : null,
       });
+
+      let normalizedLabelIds = [];
+
+      if (Array.isArray(labelIds)) {
+        normalizedLabelIds = labelIds.map(Number);
+      } else if (labelIds) {
+        normalizedLabelIds = [Number(labelIds)];
+      }
+
+      await updatedTask.$relatedQuery('labels').unrelate();
+      if (normalizedLabelIds.length > 0) {
+        await updatedTask.$relatedQuery('labels').relate(normalizedLabelIds);
+      }
+
       req.flash('info', app.i18n.t('tasks.updated'));
       return reply.redirect('/tasks');
     } catch (e) {

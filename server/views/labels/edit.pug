@@ -1,0 +1,11 @@
+extends ../layouts/application.pug
+include ../mixins/forms.pug
+include _form.pug
+
+block content
+  h1= t('labels.editLabel')
+
+  form(method="post", action=route('updateLabel', { id: label.id }))
+    input(type='hidden', name='_method', value='patch')
+    +labelForm(label, errors)
+    +submit(t('actions.update'))

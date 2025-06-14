@@ -28,12 +28,10 @@ describe('test tasks CRUD', () => {
     await knex.migrate.rollback(undefined, true);
     await knex.migrate.latest();
 
-    // Получаем пользователей и статусы из prepareData
     const data = await prepareData(app);
     testUsers = data.users;
     testStatuses = data.taskStatuses;
 
-    // Создаём задачу через ORM напрямую
     testTasks = [];
     const task = await models.task.query().insert({
       name: 'Test task',
@@ -183,7 +181,14 @@ describe('test tasks CRUD', () => {
   it('PATCH /tasks/:id - обновление создателем', async () => {
     const user = testUsers[0];
     const task = testTasks[0];
-    const newData = { name: 'Updated Task Name' };
+
+    const newData = {
+      name: 'Updated Task Name',
+      description: task.description,
+      statusId: task.statusId,
+      executorId: task.executorId,
+      labelIds: [],
+    };
 
     const loginRes = await app.inject({
       method: 'POST',
@@ -200,7 +205,7 @@ describe('test tasks CRUD', () => {
       cookies,
     });
     expect(response.statusCode).toBe(302);
-    expect(response.headers.location).toBe(app.reverse('/tasks/1/edit'));
+    expect(response.headers.location).toBe(app.reverse('tasks'));
 
     const updated = await models.task.query().findById(task.id);
     expect(updated.name).toBe(newData.name);

@@ -7,6 +7,17 @@ class Label extends BaseModel {
     return 'labels';
   }
 
+  static get jsonSchema() {
+    return {
+      type: 'object',
+      required: ['name'],
+      properties: {
+        id: { type: 'integer' },
+        name: { type: 'string', minLength: 1 },
+      },
+    };
+  }
+
   static get relationMappings() {
     return {
       tasks: {

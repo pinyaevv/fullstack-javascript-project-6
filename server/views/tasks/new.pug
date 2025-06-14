@@ -7,6 +7,12 @@ block content
   +formFor(task, { action: route('tasks.create'), method: 'POST' })
     +input(task, 'name', errors)(type="text" label=t('tasks.new.form.name'))
     +input(task, 'description', errors)(type="text" label=t('tasks.new.form.description'))
+    .form-group
+      label(for="labelIds")= t('labels.name')
+      each label in labels
+        .form-check
+          input.form-check-input(type="checkbox", name="data[labelIds]", id=`label-${label.id}`, value=label.id)
+          label.form-check-label(for=`label-${label.id}`)= label.name
 
     label(for="statusId")= t('tasks.new.form.status')
     select(name="data[statusId]" required).form-select

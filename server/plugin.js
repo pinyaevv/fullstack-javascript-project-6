@@ -26,7 +26,6 @@ import getHelpers from './helpers/index.js';
 import knexConfig from '../knexfile.js';
 import models from './models/index.js';
 import FormStrategy from './lib/passportStrategies/FormStrategy.js';
-import labelRoutes from './routes/labels.js';
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
 
@@ -146,15 +145,9 @@ const registerPlugins = async (app) => {
   // @ts-ignore
   )(...args));
   await app.register(fastifyMethodOverride);
-  console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
-  console.log('mode:', mode);
-  console.log('knexConfig keys:', Object.keys(knexConfig));
   await app.register(fastifyObjectionjs, {
     knexConfig: knexConfig[mode],
     models,
-  }).after(() => {
-    const knexInstance = app.objection.knex;
-    console.log('Knex connection config:', knexInstance.client.config.connection);
   });
 };
 
@@ -175,6 +168,5 @@ export default async (app, _options) => {
   });
   addHooks(app);
   addRoutes(app);
-  await app.register(labelRoutes);
   return app;
 };

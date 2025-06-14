@@ -1,0 +1,10 @@
+extends ../layouts/application.pug
+include ../mixins/forms.pug
+include _form.pug
+
+block content
+  h1= t('labels.createLabel')
+
+  +formFor(label, { action: route('labels'), method: 'POST' })
+    +labelForm(label, errors)
+    +submit(t('actions.create'))

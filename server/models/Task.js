@@ -2,6 +2,7 @@ import { snakeCaseMappers } from 'objection';
 import BaseModel from './BaseModel.js';
 import User from './User.js';
 import TaskStatus from './TaskStatus.js';
+// eslint-disable-next-line import/no-cycle
 import Label from './Label.js';
 
 export default class Task extends BaseModel {

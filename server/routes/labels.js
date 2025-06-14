@@ -31,7 +31,7 @@ export default async (app) => {
       return reply.view('labels/edit.pug', { label, errors: {} });
     })
 
-    .patch('/labels/:id', { name: 'updateLabel' }, async (req, reply) => {
+    .patch('/labels/:id', { name: 'labels.update' }, async (req, reply) => {
       const label = await Label.query().findById(req.params.id);
 
       try {
@@ -44,7 +44,7 @@ export default async (app) => {
       }
     })
 
-    .delete('/labels/:id', { name: 'deleteLabel' }, async (req, reply) => {
+    .delete('/labels/:id', { name: 'labels.delete' }, async (req, reply) => {
       const label = await Label.query().findById(req.params.id).withGraphFetched('tasks');
 
       if (label.tasks.length > 0) {

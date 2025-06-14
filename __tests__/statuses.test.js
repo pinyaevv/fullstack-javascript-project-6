@@ -1,6 +1,5 @@
 // @ts-check
 import fastify from 'fastify';
-
 import init from '../server/plugin.js';
 import { buildUserWithPassword } from './factories/userFactory.js';
 import prepareData from './helpers/index.js';
@@ -18,12 +17,15 @@ describe('Task statuses CRUD', () => {
   let user;
   let cookies;
 
-  beforeEach(async () => {
-    app = fastify({ logger: false });
+  beforeAll(async () => {
+    app = fastify();
     await init(app);
     knex = /** @type {import('knex').Knex} */ (app.objection.knex);
-    models = /** @type {any} */ (app.objection.models);
+    models = app.objection.models;
+  });
 
+  beforeEach(async () => {
+    await knex.migrate.rollback(undefined, true);
     await knex.migrate.latest();
 
     const { plain, hashed } = buildUserWithPassword();
@@ -39,6 +41,11 @@ describe('Task statuses CRUD', () => {
 
     const [cookie] = login.cookies;
     cookies = { [cookie.name]: cookie.value };
+  });
+
+  afterAll(async () => {
+    await knex.migrate.rollback(undefined, true); // можно добавить
+    await app.close();
   });
 
   it('index page', async () => {
@@ -83,7 +90,6 @@ describe('Task statuses CRUD', () => {
     });
 
     expect(res.statusCode).toBe(302);
-
     const updated = await models.taskStatus.query().findById(status.id);
     expect(updated.name).toBe('updated');
   });
@@ -98,13 +104,7 @@ describe('Task statuses CRUD', () => {
     });
 
     expect(res.statusCode).toBe(302);
-
     const deleted = await models.taskStatus.query().findById(status.id);
     expect(deleted).toBeUndefined();
-  });
-
-  afterEach(async () => {
-    await knex.migrate.rollback();
-    await app.close();
   });
 });

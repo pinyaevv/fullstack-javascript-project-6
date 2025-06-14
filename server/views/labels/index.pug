@@ -1,0 +1,28 @@
+extends ../layouts/application.pug
+
+block content
+  h1= t('labels.list')
+
+  a.btn.btn-primary(href=route('newLabel'))= t('labels.new')
+
+  if labels.length
+    table.table.table-bordered.mt-3
+      thead
+        tr
+          th= t('labels.index.id')
+          th= t('labels.name')
+          th= t('labels.index.createdAt')
+          th
+      tbody
+        each label in labels
+          tr
+            td= label.id
+            td= label.name
+            td= formatDate(label.createdAt)
+            td.text-end
+              a.btn.btn-outline-primary.btn-sm(href=route('editLabel', { id: label.id }))= t('actions.edit')
+              form(method='post', action=route('labels.delete', { id: label.id }))
+                input(type='hidden', name='_method', value='delete')
+                button.btn.btn-outline-danger.btn-sm(type='submit')= t('actions.delete')
+  else
+    p.text-muted.mt-3= t('labels.empty')
