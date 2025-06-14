@@ -1,4 +1,3 @@
-// __tests__/tasks.test.js
 import _ from 'lodash';
 import fastify from 'fastify';
 
@@ -11,6 +10,7 @@ describe('test tasks CRUD', () => {
   let models;
   let testUsers;
   let testStatuses;
+  let testLabels;
   let testTasks;
 
   beforeAll(async () => {
@@ -31,16 +31,29 @@ describe('test tasks CRUD', () => {
     const data = await prepareData(app);
     testUsers = data.users;
     testStatuses = data.taskStatuses;
+    testLabels = data.labels;
 
     testTasks = [];
-    const task = await models.task.query().insert({
-      name: 'Test task',
-      description: 'Test description',
+
+    const task1 = await models.task.query().insertGraph({
+      name: 'Frontend Task',
+      description: 'Test desc 1',
       statusId: testStatuses[0].id,
       creatorId: testUsers[0].id,
-      executorId: testUsers[1]?.id || null,
-    });
-    testTasks.push(task);
+      executorId: testUsers[1].id,
+      labels: [{ id: testLabels[0].id }],
+    }, { relate: true });
+
+    const task2 = await models.task.query().insertGraph({
+      name: 'Backend Task',
+      description: 'Test desc 2',
+      statusId: testStatuses[1].id,
+      creatorId: testUsers[1].id,
+      executorId: testUsers[0].id,
+      labels: [{ id: testLabels[1].id }],
+    }, { relate: true });
+
+    testTasks.push(task1, task2);
   });
 
   afterAll(async () => {
@@ -212,7 +225,7 @@ describe('test tasks CRUD', () => {
   });
 
   it('PATCH /tasks/:id - отказ в обновлении не-создателем', async () => {
-    const [creator, anotherUser] = testUsers;
+    const [anotherUser] = testUsers;
     const task = testTasks[0];
     const newData = { name: 'Should Not Update' };
 
@@ -261,7 +274,7 @@ describe('test tasks CRUD', () => {
   });
 
   it('DELETE /tasks/:id - отказ не-создателю', async () => {
-    const [creator, anotherUser] = testUsers;
+    const [, anotherUser] = testUsers;
     const task = testTasks[0];
 
     const loginRes = await app.inject({
@@ -281,5 +294,64 @@ describe('test tasks CRUD', () => {
 
     const notDeleted = await models.task.query().findById(task.id);
     expect(notDeleted).not.toBeUndefined();
+  });
+
+  it('filters by status', async () => {
+    const status = testStatuses[0];
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `${app.reverse('tasks')}?statusId=${status.id}`,
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toContain('Frontend Task');
+    expect(response.body).not.toContain('Backend Task');
+  });
+
+  it('filters by executor', async () => {
+    const executor = testUsers[1];
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `${app.reverse('tasks')}?executorId=${executor.id}`,
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toContain('Frontend Task');
+    expect(response.body).not.toContain('Backend Task');
+  });
+
+  it('filters by label', async () => {
+    const label = testLabels[1];
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `${app.reverse('tasks')}?labelId=${label.id}`,
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toContain('Backend Task');
+    expect(response.body).not.toContain('Frontend Task');
+  });
+
+  it('filters by current user as author', async () => {
+    const loginRes = await app.inject({
+      method: 'POST',
+      url: app.reverse('session'),
+      payload: { data: testUsers[0] },
+    });
+    const [cookie] = loginRes.cookies;
+    const cookies = { [cookie.name]: cookie.value };
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `${app.reverse('tasks')}?isCreatorUser=on`,
+      cookies,
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toContain('Frontend Task');
+    expect(response.body).not.toContain('Backend Task');
   });
 });

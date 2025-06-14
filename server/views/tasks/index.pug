@@ -5,6 +5,45 @@ block header
 
 block content
   a.btn.btn-primary(href=route('tasks.new'))= t('tasks.index.new')
+  
+  form(method="GET", action=route('tasks'))
+  .row.mb-3
+    .col-md-3
+      label.form-label(for="statusId") #{t('tasks.filter.status')}
+      select.form-select(name="statusId", id="statusId")
+        option(value="") #{t('tasks.filter.all')}
+        each status in statuses
+          option(
+            value=status.id
+            selected=(filterValues.statusId == status.id.toString())
+          )= status.name
+
+    .col-md-3
+      label.form-label(for="executorId") #{t('tasks.filter.executor')}
+      select.form-select(name="executorId", id="executorId")
+        option(value="") #{t('tasks.filter.all')}
+        each user in users
+          option(
+            value=user.id
+            selected=(filterValues.executorId == user.id.toString())
+          )= user.name
+
+    .col-md-3
+      label.form-label(for="labelId") #{t('tasks.filter.label')}
+      select.form-select(name="labelId", id="labelId")
+        option(value="") #{t('tasks.filter.all')}
+        each label in labels
+          option(
+            value=label.id
+            selected=(filterValues.labelId == label.id.toString())
+          )= label.name
+
+    .col-md-3.d-flex.align-items-center
+      label.form-check-label.me-2(for="isCreatorUser")
+        input.form-check-input(type="checkbox", name="isCreatorUser", id="isCreatorUser", checked=filterValues.isCreatorUser)
+        | #{t('tasks.filter.myTasksOnly')}
+
+  button.btn.btn-primary(type="submit") #{t('tasks.filter.submit')}
 
   table.table.mt-3
     thead

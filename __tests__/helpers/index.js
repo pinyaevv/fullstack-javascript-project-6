@@ -25,9 +25,17 @@ const prepareData = async (app, options = {}) => {
   await knex('task_statuses').insert(taskStatuses);
   const insertedStatuses = await knex('task_statuses').select();
 
+  const labels = [
+    { name: 'frontend' },
+    { name: 'backend' },
+  ];
+  await knex('labels').insert(labels);
+  const insertedLabels = await knex('labels').select();
+
   return {
     users: userPairs.map(({ plain }) => plain),
     taskStatuses: insertedStatuses,
+    labels: insertedLabels,
   };
 };
 

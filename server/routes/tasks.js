@@ -6,8 +6,53 @@ async function taskRoutes(app) {
   const authGuard = buildAuthGuard(app);
 
   app.get('/tasks', { name: 'tasks' }, async (req, reply) => {
-    const tasks = await Task.query().withGraphFetched('[status, creator, executor]');
-    return reply.render('tasks/index', { tasks });
+    const {
+      statusId, executorId, labelId, isCreatorUser,
+    } = req.query;
+    const userId = req.user?.id;
+
+    const filterIsCreatorUser = isCreatorUser === 'on' || isCreatorUser === true;
+
+    const filterValues = {
+      statusId: statusId || '',
+      executorId: executorId || '',
+      labelId: labelId || '',
+      isCreatorUser: filterIsCreatorUser,
+    };
+
+    let query = Task.query().withGraphJoined('[status, creator, executor, labels]');
+
+    if (statusId) {
+      query = query.where('statusId', statusId);
+    }
+
+    if (executorId) {
+      query = query.where('executorId', executorId);
+    }
+
+    if (labelId) {
+      query = query.whereExists(
+        Task.relatedQuery('labels').where('labels.id', labelId),
+      );
+    }
+
+    if (filterIsCreatorUser && userId) {
+      query = query.where('creatorId', userId);
+    }
+
+    const tasks = await query;
+
+    const statuses = await app.objection.models.taskStatus.query();
+    const users = await app.objection.models.user.query();
+    const labels = await app.objection.models.label.query();
+
+    return reply.render('tasks/index', {
+      tasks,
+      statuses,
+      users,
+      labels,
+      filterValues,
+    });
   });
 
   app.get('/tasks/new', { preHandler: authGuard, name: 'tasks.new' }, async (req, reply) => {
