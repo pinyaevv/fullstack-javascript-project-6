@@ -77,12 +77,9 @@ const setupLocalization = async (app) => {
 
 const addHooks = (app) => {
   app.addHook('preHandler', async (req, reply) => {
-    // Забираем и сразу удаляем flash из сессии
     const flash = req.session.get('flash') || {};
-    req.session.set('flash', {}); // <-- ключевой момент!
 
-    // Передаём во все шаблоны
-    reply.locals = {
+    const defaultLocals = {
       t: req.t || i18next.t,
       route: app.reverse.bind(app),
       isAuthenticated: () => req.isAuthenticated(),
@@ -99,11 +96,16 @@ const addHooks = (app) => {
       formatDate: (date) => dayjs(date).format('YYYY-MM-DD HH:mm:ss'),
     };
 
-    req.flash = (type, message) => {
+    const originalRender = reply.render.bind(reply);
+    reply.render = (template, data = {}) => originalRender(template, { ...defaultLocals, ...data });
+
+    await req.session.set('flash', {});
+
+    req.flash = async (type, message) => {
       const current = req.session.get('flash') || {};
       if (!current[type]) current[type] = [];
       current[type].push(message);
-      req.session.set('flash', current);
+      await req.session.set('flash', current);
     };
   });
 };

@@ -4,31 +4,31 @@ export default async (app) => {
   app
     .get('/labels', { name: 'labels' }, async (req, reply) => {
       const labels = await Label.query();
-      return reply.view('labels/index.pug', { labels });
+      return reply.render('labels/index.pug', { labels });
     })
 
     .get('/labels/new', { name: 'newLabel' }, async (req, reply) => {
       const label = new Label();
-      return reply.view('labels/new.pug', { label, errors: {} });
+      return reply.render('labels/new.pug', { label, errors: {} });
     })
 
     .post('/labels', async (req, reply) => {
-      const label = new Label();
-      label.$set(req.body.data);
-
       try {
-        await Label.query().insert(label);
-        req.flash('info', req.t('flash.labels.create.success'));
+        await Label.query().insert(req.body.data);
+        await req.flash('success', req.t('flash.labels.create.success'));
         return reply.redirect(app.reverse('labels'));
       } catch (e) {
-        req.flash('error', req.t('flash.labels.create.error'));
-        return reply.code(422).view('labels/new.pug', { label, errors: e.data });
+        const errors = e.data || {};
+        const label = new Label();
+        label.$set(req.body.data);
+        const flash = { error: [req.t('flash.labels.create.error')] };
+        return reply.code(422).render('labels/new.pug', { label, errors, flash });
       }
     })
 
     .get('/labels/:id/edit', { name: 'editLabel' }, async (req, reply) => {
       const label = await Label.query().findById(req.params.id);
-      return reply.view('labels/edit.pug', { label, errors: {} });
+      return reply.render('labels/edit.pug', { label, errors: {} });
     })
 
     .patch('/labels/:id', { name: 'labels.update' }, async (req, reply) => {
@@ -40,7 +40,7 @@ export default async (app) => {
         return reply.redirect(app.reverse('labels'));
       } catch (e) {
         req.flash('error', req.t('flash.labels.update.error'));
-        return reply.code(422).view('labels/edit.pug', { label, errors: e.data });
+        return reply.code(422).render('labels/edit.pug', { label, errors: e.data });
       }
     })
 

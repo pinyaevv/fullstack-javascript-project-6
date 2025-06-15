@@ -84,10 +84,10 @@ async function taskRoutes(app) {
         await task.$relatedQuery('labels').relate(labelIds);
       }
 
-      req.flash('info', app.i18n.t('tasks.created'));
+      req.flash('info', app.i18n.t('flash.tasks.created'));
       return reply.redirect('/tasks');
     } catch (e) {
-      req.flash('error', app.i18n.t('tasks.error'));
+      req.flash('error', app.i18n.t('flash.tasks.error'));
       return reply.redirect('/tasks/new');
     }
   });
@@ -126,7 +126,7 @@ async function taskRoutes(app) {
         return reply.code(404).send();
       }
       if (task.creatorId !== req.user.id) {
-        req.flash('error', app.i18n.t('tasks.updateDenied'));
+        req.flash('error', app.i18n.t('flash.tasks.updateDenied'));
         return reply.redirect('/tasks');
       }
 
@@ -154,10 +154,10 @@ async function taskRoutes(app) {
         await updatedTask.$relatedQuery('labels').relate(normalizedLabelIds);
       }
 
-      req.flash('info', app.i18n.t('tasks.updated'));
+      req.flash('info', app.i18n.t('flash.tasks.updated'));
       return reply.redirect('/tasks');
     } catch (e) {
-      req.flash('error', app.i18n.t('tasks.error'));
+      req.flash('error', app.i18n.t('flash.tasks.error'));
       return reply.redirect(`/tasks/${req.params.id}/edit`);
     }
   });
@@ -169,14 +169,14 @@ async function taskRoutes(app) {
         return reply.code(404).send();
       }
       if (task.creatorId !== req.user.id) {
-        req.flash('error', app.i18n.t('tasks.deleteDenied'));
+        req.flash('error', app.i18n.t('flash.tasks.deleteDenied'));
         return reply.redirect('/tasks');
       }
       await Task.query().deleteById(req.params.id);
-      req.flash('info', app.i18n.t('tasks.deleted'));
+      req.flash('info', app.i18n.t('flash.tasks.deleted'));
       return reply.redirect('/tasks');
     } catch (e) {
-      req.flash('error', app.i18n.t('tasks.error'));
+      req.flash('error', app.i18n.t('flash.tasks.error'));
       return reply.redirect('/tasks');
     }
   });

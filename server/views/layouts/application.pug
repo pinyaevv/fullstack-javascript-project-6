@@ -32,14 +32,14 @@ html(lang="en")
             ul.navbar-nav.mr-auto
               li.nav-item
                 a.nav-link(href=route('users'))= t('layouts.application.users')
-              li.nav-item
-                a.nav-link(href=route('statuses'))= t('layouts.application.statuses')
-              li.nav-item
-                a.nav-link(href=route('tasks'))= t('layouts.application.tasks')
-              li.nav-item
-                a.nav-link(href=route('labels'))= t('layouts.application.labels')
             ul.navbar-nav
               if isAuthenticated()
+                li.nav-item
+                  a.nav-link(href=route('statuses'))= t('layouts.application.statuses')
+                li.nav-item
+                  a.nav-link(href=route('labels'))= t('layouts.application.labels')
+                li.nav-item
+                  a.nav-link(href=route('tasks'))= t('layouts.application.tasks')
                 li.nav-item
                   form(action=route('deleteSession') method='post' class="d-inline")
                     input(type="hidden", name="_method", value="delete")
@@ -49,12 +49,14 @@ html(lang="en")
                   a.nav-link(href=route('newSession'))= t('layouts.application.signIn')
                 li.nav-item
                   a.nav-link(href=route('newUser'))= t('layouts.application.signUp')
+
     .container.flex-grow-1.bg-dark.text-light.d-flex.flex-column.justify-content-center.align-items-center
       if flash
         each messages, type in flash
           if messages && messages.length
             each message in messages
-              div.alert(class=`alert ${getAlertClass(type)}` role="alert")= message
+              - const alertClass = getAlertClass ? getAlertClass(type) : 'alert-secondary'
+              div.alert(class=`alert ${alertClass}` role="alert")= message
 
       h1.my-4
         block header

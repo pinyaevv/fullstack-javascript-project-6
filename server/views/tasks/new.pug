@@ -1,29 +1,30 @@
 extends ../layouts/application.pug
 
 block header
-  | #{t('tasks.new.title')}
+  | #{t('views.tasks.new.title')}
 
 block content
   +formFor(task, { action: route('tasks.create'), method: 'POST' })
-    +input(task, 'name', errors)(type="text" label=t('tasks.new.form.name'))
-    +input(task, 'description', errors)(type="text" label=t('tasks.new.form.description'))
+    +input(task, 'name', errors)(type="text" label=t('views.tasks.new.form.name'))
+    +input(task, 'description', errors)(type="text" label=t('views.tasks.new.form.description'))
+
+    label(for="statusId")= t('views.tasks.new.form.status')
+    select(name="data[statusId]" required).form-select
+      option(value="") #{t('views.tasks.new.form.selectStatus')}
+      each status in statuses
+        option(value=status.id selected=(String(task.statusId) === String(status.id)))= status.name
+
+    label(for="executorId")= t('views.tasks.new.form.executor')
+    select(name="data[executorId]").form-select
+      option(value="") #{t('views.tasks.new.form.selectExecutor')}
+      each user in users
+        option(value=user.id selected=(String(task.executorId) === String(user.id)))= user.email
+    
     .form-group
-      label(for="labelIds")= t('labels.name')
+      label(for="labelIds")= t('views.tasks.index.labels')
       each label in labels
         .form-check
           input.form-check-input(type="checkbox", name="data[labelIds]", id=`label-${label.id}`, value=label.id)
           label.form-check-label(for=`label-${label.id}`)= label.name
 
-    label(for="statusId")= t('tasks.new.form.status')
-    select(name="data[statusId]" required).form-select
-      option(value="") #{t('tasks.new.form.selectStatus')}
-      each status in statuses
-        option(value=status.id selected=(String(task.statusId) === String(status.id)))= status.name
-
-    label(for="executorId")= t('tasks.new.form.executor')
-    select(name="data[executorId]").form-select
-      option(value="") #{t('tasks.new.form.selectExecutor')}
-      each user in users
-        option(value=user.id selected=(String(task.executorId) === String(user.id)))= user.email
-
-    +submit()(value=t('tasks.new.submit'))
+    +submit()(value=t('views.tasks.new.submit'))

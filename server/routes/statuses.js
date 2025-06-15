@@ -39,12 +39,14 @@ export default (app) => {
   }, async (req, reply) => {
     console.log('Request body:', req.body);
     try {
-      await app.objection.models.taskStatus.query().insert(req.body.data);
+      const validStatus = await app.objection.models.taskStatus.fromJson(req.body.data);
+      await app.objection.models.taskStatus.query().insert(validStatus);
       req.flash('success', i18next.t('flash.statuses.create.success'));
       return reply.redirect(app.reverse('statuses'));
     } catch (e) {
-      req.flash('error', i18next.t('flash.statuses.create.error'));
-      return reply.render('statuses/new', { status: req.body.data, errors: e.data });
+      const errors = e.data || {};
+      const flash = { error: [req.t('flash.statuses.create.error')] };
+      return reply.render('statuses/new', { errors, flash });
     }
   });
 
@@ -58,8 +60,8 @@ export default (app) => {
       req.flash('success', i18next.t('flash.statuses.update.success'));
       return reply.redirect(app.reverse('statuses'));
     } catch (e) {
-      req.flash('error', i18next.t('flash.statuses.update.error'));
       const status = await app.objection.models.taskStatus.query().findById(id);
+      await req.flash('error', i18next.t('flash.statuses.update.error'));
       return reply.render('statuses/edit', { status, errors: e.data });
     }
   });

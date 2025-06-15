@@ -12,6 +12,7 @@ block content
         th= t('views.statuses.index.id')
         th= t('views.statuses.index.name')
         th= t('views.statuses.index.createdAt')
+        th= t('views.statuses.index.actions')
     tbody
       each status in statuses
         tr
@@ -24,8 +25,4 @@ block content
               route('statuses.delete', { id: status.id }),
               'delete',
               t('views.statuses.index.delete'),
-              {
-                class: 'btn btn-sm btn-outline-danger',
-                onclick: `return confirm('${t('views.statuses.index.confirm')}');`
-              }
             )

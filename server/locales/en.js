@@ -16,17 +16,18 @@ export default {
       },
 
       users: {
-        accessDenied: 'Access denied',
+        accessDenied: 'Access denied! Please log in.',
         create: {
-          error: 'Failed to register',
           success: 'User registered successfully',
+          error: 'Failed to register',
         },
         update: {
-          error: 'Error updating data',
           success: 'User data updated successfully',
+          error: 'Failed to change user',
         },
         delete: {
           success: 'User successfully deleted',
+          error: 'You cannot edit or delete another user.',
         },
       },
 
@@ -49,12 +50,31 @@ export default {
         },
       },
 
+      labels: {
+        new: {
+          header: '',
+          submit: '',
+        },
+        create: {
+          success: 'The label was successfully created',
+          error: 'Failed to create label',
+        },
+        update: {
+          success: 'The label has been changed successfully',
+          error: '',
+        },
+        delete: {
+          success: 'The tag has been successfully removed',
+          error: '',
+        },
+      },
+
       tasks: {
-        create: 'Task created successfully',
+        created: 'Task successfully created',
         updated: 'Task updated successfully',
         deleted: 'Task deleted successfully',
         error: 'Error processing task',
-        deleteDenied: 'You cannot delete this task',
+        deleteDenied: 'A task can only be deleted by its author',
         name: 'Name',
         status: 'Status',
         creator: 'Creator',
@@ -85,16 +105,24 @@ export default {
       },
 
       users: {
-        id: 'ID',
-        email: 'Email',
-        createdAt: 'Created at',
+        index: {
+          id: 'ID',
+          fullName: 'fullName',
+          email: 'Email',
+          createdAt: 'Created at',
+          actions: 'Actions',
+        },
+        action: {
+          edit: 'Change',
+          delete: 'Delete',
+        },
         new: {
           submit: 'Register',
           signUp: 'Register',
         },
         edit: {
-          editProfile: 'Edit profile',
-          submit: 'Save',
+          editProfile: 'Change user',
+          submit: 'Сhange',
         },
       },
 
@@ -121,6 +149,7 @@ export default {
           createdAt: 'Created at',
           edit: 'Change',
           delete: 'Delete',
+          actions: 'Actions',
         },
         edit: {
           header: 'Change of status',
@@ -135,7 +164,10 @@ export default {
           name: 'Name',
           status: 'Status',
           creator: 'Creator',
+          executor: 'Executor',
           createdAt: 'Date of creation',
+          actions: 'Actions',
+          labels: 'Labels',
         },
 
         action: {
@@ -146,8 +178,8 @@ export default {
         },
 
         new: {
-          title: 'New Task',
-          submit: 'Create task',
+          title: 'Creating a task',
+          submit: 'Create',
           form: {
             name: 'Name',
             description: 'Description',
@@ -176,7 +208,7 @@ export default {
           executor: 'Executor',
           label: 'Label',
           myTasksOnly: 'Just my tasks',
-          all: 'Creator',
+          all: '',
         },
       },
 

@@ -1,6 +1,12 @@
 extends ../layouts/application.pug
 
 block content
+  if flash
+    each messages, type in flash
+      if messages && messages.length
+        each message in messages
+          div.alert(class=`alert ${getAlertClass(type)}` role="alert")= message
+
   h1= t('views.tasks.edit.title')
 
   form(method="post" action=route('tasks.update', { id: task.id }) )

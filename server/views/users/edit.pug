@@ -4,7 +4,8 @@ block header
     = t('views.users.edit.editProfile')
 
 block content
-  +formFor(user, { method: 'patch', action: route('updateUser', { id: user.id }) })
+  +formFor(user, { method: 'POST', action: route('updateUser', { id: user.id }) })
+    input(type='hidden', name='_method', value="patch")
     +input(user, 'firstName', errors)(type="text")
     +input(user, 'lastName', errors)(type="text")
     +input(user, 'email', errors)(type="text")

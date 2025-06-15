@@ -52,7 +52,9 @@ block content
         th= t('views.tasks.index.name')
         th= t('views.tasks.index.status')
         th= t('views.tasks.index.creator')
+        th= t('views.tasks.index.executor')
         th= t('views.tasks.index.createdAt')
+        th= t('views.tasks.index.actions')
         th
     tbody
       each task in tasks
@@ -62,6 +64,7 @@ block content
             a(href=route('tasks.show', { id: task.id }))= task.name
           td= task.status && task.status.name
           td= task.creator && task.creator.email
+          td= task.executor && task.executor.email
           td= formatDate(task.createdAt)
           td
             a.btn.btn-sm.btn-outline-primary.me-2(href=route('tasks.edit', { id: task.id }))= t('views.tasks.action.edit')
