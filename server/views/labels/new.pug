@@ -6,5 +6,5 @@ block content
   h1= t('views.labels.new.createLabel')
 
   +formFor(label, { action: route('labels'), method: 'POST' })
-    +input(label, errors)(type="text" label=t('views.labels.new.name'))
+    +input(label, 'name', errors)(type="text" label=t('views.labels.new.name'))
     +submit(t('views.labels.actions.create'))

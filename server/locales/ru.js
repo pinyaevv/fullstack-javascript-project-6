@@ -225,6 +225,7 @@ export default {
           id: 'ID',
           name: 'Имя',
           createdAt: 'Дата создания',
+          action: 'Действие',
           new: 'Создать метку',
           edit: 'Изменить',
           delete: 'Удалить',

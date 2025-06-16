@@ -225,6 +225,7 @@ export default {
           id: 'ID',
           name: 'Name',
           createdAt: 'Date of creation',
+          action: 'Action',
           new: 'Create label',
           edit: 'Change',
           delete: 'Delete',
