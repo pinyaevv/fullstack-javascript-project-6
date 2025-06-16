@@ -116,8 +116,12 @@ export default {
           delete: 'Delete',
         },
         new: {
+          signUp: 'Registration',
+          firstname: 'First name',
+          lastname: 'Last name',
+          email: 'Email',
+          password: 'Password',
           submit: 'Save',
-          signUp: 'Register',
         },
         edit: {
           editProfile: 'Change user',

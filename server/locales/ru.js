@@ -116,8 +116,12 @@ export default {
           delete: 'Удалить',
         },
         new: {
-          submit: 'Сохранить',
           signUp: 'Регистрация',
+          firstname: 'Имя',
+          lastname: 'Фамилия',
+          email: 'Email',
+          password: 'Пароль',
+          submit: 'Сохранить',
         },
         edit: {
           editProfile: 'Изменить пользователя',

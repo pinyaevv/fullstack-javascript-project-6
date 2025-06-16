@@ -5,8 +5,8 @@ block header
 
 block content
   +formFor(user, { action: route('users'), method: 'POST' })
-    +input(user, 'firstName', errors)(type="text" label="First name")
-    +input(user, 'lastName', errors)(type="text" label="Last name")
-    +input(user, 'email', errors)(type="text" label="Email")
-    +input(user, 'password', errors)(type="password" label="Password")
+    +input(user, 'firstName', errors)(type="text" label=t('views.users.new.firstname'))
+    +input(user, 'lastName', errors)(type="text" label=t('views.users.new.lastname'))
+    +input(user, 'email', errors)(type="text" label=t('views.users.new.email'))
+    +input(user, 'password', errors)(type="password" label=t('views.users.new.password'))
     +submit(user)(value=t('views.users.new.submit'))
