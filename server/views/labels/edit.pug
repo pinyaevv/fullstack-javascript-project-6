@@ -7,5 +7,5 @@ block content
 
   form(method="post", action=route('labels.update', { id: label.id }))
     input(type='hidden', name='_method', value='patch')
-    +labelForm(label, errors)
+    +input(label, 'name', errors)(type="text" label=t('views.labels.new.name'))
     +submit(t('views.labels.actions.change'))
