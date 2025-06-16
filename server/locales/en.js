@@ -41,7 +41,7 @@ export default {
           error: 'Error creating status',
         },
         update: {
-          success: 'Status updated successfully',
+          success: 'Status successfully changed',
           error: 'Error updating status',
         },
         delete: {
