@@ -38,7 +38,7 @@ export default {
         },
         create: {
           success: 'Status created successfully',
-          error: 'Error creating status',
+          error: 'Failed to create status',
         },
         update: {
           success: 'Status successfully changed',
