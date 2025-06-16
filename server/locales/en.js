@@ -8,7 +8,7 @@ export default {
       session: {
         create: {
           success: 'You are logged in',
-          error: 'Wrong email or password',
+          error: 'Incorrect email or password',
         },
         delete: {
           success: 'You are logged out',
@@ -81,7 +81,7 @@ export default {
         executor: 'Executor',
       },
 
-      authError: 'Access denied! Please login',
+      authError: 'Access denied! Please log in.',
     },
 
     layouts: {
@@ -116,7 +116,7 @@ export default {
           delete: 'Delete',
         },
         new: {
-          submit: 'Register',
+          submit: 'Save',
           signUp: 'Register',
         },
         edit: {
