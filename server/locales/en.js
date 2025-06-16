@@ -75,10 +75,6 @@ export default {
         deleted: 'Task deleted successfully',
         error: 'Error processing task',
         deleteDenied: 'A task can only be deleted by its author',
-        name: 'Name',
-        status: 'Status',
-        creator: 'Creator',
-        executor: 'Executor',
       },
 
       authError: 'Access denied! Please log in.',

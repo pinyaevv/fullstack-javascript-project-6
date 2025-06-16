@@ -75,10 +75,6 @@ export default {
         deleted: 'Задача успешно удалена',
         error: 'Ошибка при обработке задачи',
         deleteDenied: 'Задачу может удалить только её автор',
-        name: 'Имя',
-        status: 'Статус',
-        creator: 'Автор',
-        executor: 'Исполнитель',
       },
 
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
@@ -188,7 +184,7 @@ export default {
           title: 'Создание задачи',
           submit: 'Создать',
           form: {
-            name: 'Имя',
+            name: 'Наименование',
             description: 'Описание',
             status: 'Статус',
             selectStatus: '',
