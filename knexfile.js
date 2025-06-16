@@ -6,6 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const migrations = {
   directory: path.join(__dirname, 'server', 'migrations'),
+  extension: 'js',
 };
 
 const config = {

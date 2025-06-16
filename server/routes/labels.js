@@ -2,7 +2,7 @@ import Label from '../models/Label.js';
 
 export default async (app) => {
   app
-    .get('/labels', { name: 'labels', onRequest: app.authenticate }, async (req, reply) => {
+    .get('/labels', { name: 'labels' }, async (req, reply) => {
       const labels = await Label.query();
       return reply.render('labels/index.pug', { labels });
     })

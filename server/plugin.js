@@ -173,7 +173,6 @@ export default async (app, _options) => {
   });
   addHooks(app);
   addRoutes(app);
-  console.log('Registering routes');
 
   app.setErrorHandler((err, req, reply) => {
     if (process.env.NODE_ENV === 'production') {
