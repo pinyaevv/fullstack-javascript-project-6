@@ -1,9 +1,9 @@
 extends ../layouts/application.pug
 
 block header
-  | #{t('views.statuses.index.header')}
+  | #{t('views.statuses.new.header')}
 
 block content
   +formFor(status, { action: route('statuses'), method: 'POST' })
-    +input(status, 'name', errors)
-    +submit(t('views.statuses.index.new'))
+    +input(status, 'name', errors)(type="text" label=t('views.statuses.new.name'))
+    +submit(t('views.statuses.new.create'))

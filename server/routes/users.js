@@ -39,8 +39,8 @@ export default (app) => {
       } catch (error) {
         console.error('Registration error:', error);
         const errors = error.data || error.details || error;
-        req.flash('error', i18next.t('flash.users.create.error'));
-        return reply.render('users/new', { user, errors });
+        const flash = { error: [i18next.t('flash.users.create.error')] };
+        return reply.render('users/new', { user, errors, flash });
       }
     })
 

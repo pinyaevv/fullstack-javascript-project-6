@@ -143,17 +143,23 @@ export default {
 
       statuses: {
         index: {
-          id: 'ID',
           header: 'Statuses',
           new: 'Create',
+          id: 'ID',
           name: 'Name',
           createdAt: 'Created at',
           edit: 'Change',
           delete: 'Delete',
           actions: 'Actions',
         },
+        new: {
+          header: 'Create a status',
+          name: 'Name',
+          create: 'Create',
+        },
         edit: {
           header: 'Change of status',
+          name: 'Name',
           submit: 'Сhange',
         },
       },
