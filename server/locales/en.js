@@ -98,12 +98,11 @@ export default {
 
     views: {
       session: {
-        new: {
-          signIn: 'Login',
-          submit: 'Login',
-        },
+        signIn: 'Entrance',
+        email: 'Email',
+        password: 'Password',
+        login: 'Login',
       },
-
       users: {
         index: {
           id: 'ID',
@@ -132,12 +131,6 @@ export default {
           description: 'Online programming school',
           more: 'Learn more',
         },
-      },
-
-      cover: {
-        title: 'Task Manager',
-        description: 'Organize your tasks effectively and stress-free.',
-        getStarted: 'Get Started',
       },
 
       statuses: {

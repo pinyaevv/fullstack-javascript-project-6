@@ -98,12 +98,11 @@ export default {
 
     views: {
       session: {
-        new: {
-          signIn: 'Вход',
-          submit: 'Войти',
-        },
+        signIn: 'Вход',
+        email: 'Email',
+        password: 'Пароль',
+        login: 'Войти',
       },
-
       users: {
         index: {
           id: 'ID',
@@ -132,12 +131,6 @@ export default {
           description: 'Онлайн школа программирования',
           more: 'Узнать больше',
         },
-      },
-
-      cover: {
-        title: 'Менеджер задач',
-        description: 'Организуйте задачи эффективно и без стресса.',
-        getStarted: 'Начать',
       },
 
       statuses: {
