@@ -40,7 +40,7 @@ describe('test labels CRUD', () => {
     return { [sessionCookie.name]: sessionCookie.value };
   };
 
-  it('GET /labels - список меток', async () => {
+  it('GET /labels - list of tags', async () => {
     const label = await models.label.query().insert({ name: 'bug' });
 
     const response = await app.inject({
@@ -52,7 +52,7 @@ describe('test labels CRUD', () => {
     expect(response.body).toContain(label.name);
   });
 
-  it('POST /labels - создание метки', async () => {
+  it('POST /labels - creating a label', async () => {
     const cookies = await loginAndGetCookies(testUsers[0]);
     const labelData = { name: 'feature' };
 
@@ -69,7 +69,7 @@ describe('test labels CRUD', () => {
     expect(label).not.toBeNull();
   });
 
-  it('PATCH /labels/:id - обновление метки', async () => {
+  it('PATCH /labels/:id - update tag', async () => {
     const cookies = await loginAndGetCookies(testUsers[0]);
     const label = await models.label.query().insert({ name: 'old name' });
 
@@ -86,7 +86,7 @@ describe('test labels CRUD', () => {
     expect(updated.name).toBe('new name');
   });
 
-  it('DELETE /labels/:id - удаление неиспользуемой метки', async () => {
+  it('DELETE /labels/:id - remove unused label', async () => {
     const cookies = await loginAndGetCookies(testUsers[0]);
     const label = await models.label.query().insert({ name: 'temporary' });
 
@@ -102,7 +102,7 @@ describe('test labels CRUD', () => {
     expect(deleted).toBeUndefined();
   });
 
-  it('DELETE /labels/:id - запрет на удаление связанной метки', async () => {
+  it('DELETE /labels/:id - prohibition on deleting the associated tag', async () => {
     const cookies = await loginAndGetCookies(testUsers[0]);
 
     const label = await models.label.query().insert({ name: 'linked' });

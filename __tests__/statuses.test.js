@@ -17,14 +17,13 @@ describe('Task statuses CRUD', () => {
   let user;
   let cookies;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     app = fastify();
     await init(app);
+    await app.ready();
     knex = /** @type {import('knex').Knex} */ (app.objection.knex);
     models = app.objection.models;
-  });
 
-  beforeEach(async () => {
     await knex.migrate.rollback(undefined, true);
     await knex.migrate.latest();
 
@@ -43,9 +42,10 @@ describe('Task statuses CRUD', () => {
     cookies = { [cookie.name]: cookie.value };
   });
 
-  afterAll(async () => {
-    await knex.migrate.rollback(undefined, true); // можно добавить
-    await app.close();
+  afterEach(async () => {
+    if (app) {
+      await app.close();
+    }
   });
 
   it('index page', async () => {

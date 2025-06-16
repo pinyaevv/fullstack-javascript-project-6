@@ -8,7 +8,7 @@ import fastifyStatic from '@fastify/static';
 import fastifyView from '@fastify/view';
 import fastifyFormbody from '@fastify/formbody';
 import fastifySecureSession from '@fastify/secure-session';
-import fastifyPassport from '@fastify/passport';
+import FastifyPassport from '@fastify/passport';
 import fastifySensible from '@fastify/sensible';
 import { plugin as fastifyReverseRoutes } from 'fastify-reverse-routes';
 import fastifyMethodOverride from 'fastify-method-override';
@@ -26,6 +26,7 @@ import getHelpers from './helpers/index.js';
 import knexConfig from '../knexfile.js';
 import models from './models/index.js';
 import FormStrategy from './lib/passportStrategies/FormStrategy.js';
+import rollbar from './lib/rollbar.js';
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
 
@@ -130,6 +131,8 @@ const registerPlugins = async (app) => {
     },
   });
 
+  const fastifyPassport = new FastifyPassport.Authenticator();
+
   fastifyPassport.registerUserDeserializer(
     (user) => app.objection.models.user.query().findById(user.id),
   );
@@ -170,5 +173,19 @@ export default async (app, _options) => {
   });
   addHooks(app);
   addRoutes(app);
+  console.log('Registering routes');
+
+  app.setErrorHandler((err, req, reply) => {
+    if (process.env.NODE_ENV === 'production') {
+      rollbar.error(err, req);
+    } else {
+      app.log.error(err);
+    }
+
+    reply.status(err.statusCode || 500).send({
+      error: 'Internal Server Error',
+    });
+  });
+
   return app;
 };
