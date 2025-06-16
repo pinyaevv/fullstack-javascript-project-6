@@ -144,7 +144,7 @@ export default {
       statuses: {
         index: {
           header: 'Статусы',
-          new: 'Создать',
+          new: 'Создать статус',
           id: 'ID',
           name: 'Имя',
           createdAt: 'Дата создания',
