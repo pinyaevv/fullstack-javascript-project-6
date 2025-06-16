@@ -124,7 +124,7 @@ const registerPlugins = async (app) => {
     origin: process.env.APP_URL || '*',
   });
   await app.register(fastifySecureSession, {
-    secret: Buffer.from(process.env.SESSION_KEY, 'hex'),
+    secret: process.env.SESSION_KEY,
     cookie: {
       path: '/',
       secure: false,
