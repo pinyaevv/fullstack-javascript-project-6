@@ -238,6 +238,7 @@ export default {
         },
         new: {
           createLabel: 'Создание метки',
+          name: 'Наименование',
         },
         edit: {
           header: 'Изменение метки',

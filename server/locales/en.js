@@ -238,6 +238,7 @@ export default {
         },
         new: {
           createLabel: 'Creating a label',
+          name: 'Name',
         },
         edit: {
           header: 'Change label',
