@@ -22,7 +22,7 @@ export default {
           error: 'Failed to register',
         },
         update: {
-          success: 'User data updated successfully',
+          success: 'User successfully changed',
           error: 'Failed to change user',
         },
         delete: {
@@ -125,6 +125,10 @@ export default {
         },
         edit: {
           editProfile: 'Change user',
+          firstname: 'First name',
+          lastname: 'Last name',
+          email: 'Email',
+          password: 'Password',
           submit: 'Сhange',
         },
       },

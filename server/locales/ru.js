@@ -22,7 +22,7 @@ export default {
           error: 'Не удалось зарегистрировать',
         },
         update: {
-          success: 'Данные пользователя успешно обновлены',
+          success: 'Пользователь успешно изменён',
           error: 'Не удалось изменить пользователя',
         },
         delete: {
@@ -124,7 +124,11 @@ export default {
           submit: 'Сохранить',
         },
         edit: {
-          editProfile: 'Изменить пользователя',
+          editProfile: 'Изменение пользователя',
+          firstname: 'Имя',
+          lastname: 'Фамилия',
+          email: 'Email',
+          password: 'Пароль',
           submit: 'Изменить',
         },
       },
