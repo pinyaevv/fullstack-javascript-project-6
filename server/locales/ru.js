@@ -204,7 +204,7 @@ export default {
         edit: {
           title: 'Изменение задачи',
           form: {
-            name: 'Имя',
+            name: 'Наименование',
             description: 'Описание',
             status: 'Статус',
             selectStatus: 'Выберите статус',
