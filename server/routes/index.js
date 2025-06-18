@@ -8,12 +8,12 @@ import tasks from './tasks.js';
 import labels from './labels.js';
 
 const controllers = [
-    welcome,
-    users,
-    session,
-    statuses,
-    tasks,
-    labels,
+  welcome,
+  users,
+  session,
+  statuses,
+  tasks,
+  labels,
 ];
 
 export default (app) => controllers.forEach((f) => f(app));

@@ -15,11 +15,10 @@ env:
 rules:
   no-console: 0
   import/extensions: 0
-  arrow-body-style: off
 
   indent:
     - error
-    - 4
+    - 2
 
   eol-last:
     - error
