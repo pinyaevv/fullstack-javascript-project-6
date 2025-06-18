@@ -47,18 +47,16 @@ block content
           option(
             value=user.id,
             selected=(String(task.executorId) === String(user.id))
-          )= user.email
+          )= user.fullName
       if errors.executorId
         each err in errors.executorId
           .invalid-feedback(style='display:block')= err
     
     .form-group
       label(for="labelIds")= t('views.tasks.edit.form.labels')
-      each label in labels
-        - const isChecked = task.labels?.some((l) => l.id === label.id);
-        .form-check
-          input.form-check-input(type="checkbox", name="data[labelIds]", id=`label-${label.id}`, value=label.id, checked=isChecked)
-          label.form-check-label(for=`label-${label.id}`)= label.name
+      select#data_labels(name="data[labelIds]" multiple).form-select
+        each label in labels
+          option(value=label.id selected=labelIds.includes(label.id))= label.name
 
 
     button.btn.btn-primary(type="submit")= t('views.tasks.action.edit')

@@ -96,7 +96,7 @@ describe('test tasks CRUD', () => {
       cookies,
     });
     expect(response.statusCode).toBe(200);
-    expect(response.body).toContain('Create task');
+    expect(response.body).toContain('Создание задачи');
   });
 
   it('POST /tasks - создание задачи (авторизованный)', async () => {

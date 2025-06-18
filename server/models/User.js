@@ -32,6 +32,10 @@ export default class User extends unique(BaseModel) {
     return this.plainPassword;
   }
 
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+
   $formatDatabaseJson(json) {
     const dbJson = super.$formatDatabaseJson(json);
     delete dbJson.plainPassword;
