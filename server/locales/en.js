@@ -71,7 +71,7 @@ export default {
 
       tasks: {
         created: 'Task successfully created',
-        updated: 'Task updated successfully',
+        updated: 'Task successfully modified',
         deleted: 'Task deleted successfully',
         error: 'Failed to create task',
         deleteDenied: 'A task can only be deleted by its author',
