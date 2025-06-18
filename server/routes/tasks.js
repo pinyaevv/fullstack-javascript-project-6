@@ -11,7 +11,7 @@ async function taskRoutes(app) {
     } = req.query;
     const userId = req.user?.id;
 
-    const filterIsCreatorUser = isCreatorUser === 'on' || isCreatorUser === true;
+    const filterIsCreatorUser = Boolean(isCreatorUser);
 
     const filterValues = {
       statusId: statusId || '',
@@ -23,16 +23,16 @@ async function taskRoutes(app) {
     let query = Task.query().withGraphJoined('[status, creator, executor, labels]');
 
     if (statusId) {
-      query = query.where('statusId', statusId);
+      query = query.where('statusId', Number(statusId));
     }
 
     if (executorId) {
-      query = query.where('executorId', executorId);
+      query = query.where('executorId', Number(executorId));
     }
 
     if (labelId) {
       query = query.whereExists(
-        Task.relatedQuery('labels').where('labels.id', labelId),
+        Task.relatedQuery('labels').where('labels.id', Number(labelId)),
       );
     }
 
