@@ -66,29 +66,56 @@ async function taskRoutes(app) {
   });
 
   app.post('/tasks', { preHandler: authGuard, name: 'tasks.create' }, async (req, reply) => {
+    const { data } = req.body;
+    data.creatorId = req.user.id;
+
+    data.statusId = data.statusId ? Number(data.statusId) : null;
+    data.executorId = data.executorId ? Number(data.executorId) : null;
+
+    let labelIds = [];
+    if (Array.isArray(data.labelIds)) {
+      labelIds = data.labelIds.map(Number);
+    } else if (data.labelIds) {
+      labelIds = [Number(data.labelIds)];
+    }
+
     try {
-      const { data } = req.body;
-      data.creatorId = req.user.id;
-      data.statusId = Number(data.statusId);
-      data.executorId = Number(data.executorId);
-      let labelIds = [];
-
-      if (Array.isArray(data.labelIds)) {
-        labelIds = data.labelIds.map(Number);
-      } else if (data.labelIds) {
-        labelIds = [Number(data.labelIds)];
-      }
-
-      const task = await Task.query().insert(data);
+      const task = await app.objection.models.task.query().insert(data);
       if (labelIds.length > 0) {
         await task.$relatedQuery('labels').relate(labelIds);
       }
 
       req.flash('info', app.i18n.t('flash.tasks.created'));
-      return reply.redirect('/tasks');
-    } catch (e) {
-      req.flash('error', app.i18n.t('flash.tasks.error'));
-      return reply.redirect('/tasks/new');
+      return reply.redirect(app.reverse('tasks'));
+    } catch (error) {
+      reply.code(422);
+
+      const statuses = await app.objection.models.taskStatus.query();
+      const users = await app.objection.models.user.query();
+      const labels = await app.objection.models.label.query();
+
+      const errorMessage = app.i18n.t('flash.tasks.error');
+
+      return reply.view('tasks/new', {
+        task: data,
+        statuses,
+        users,
+        labels,
+        labelIds,
+        errors: error.data || {},
+        flash: { error: [errorMessage] },
+        isAuthenticated: req.isAuthenticated.bind(req),
+        currentUser: req.user,
+        getAlertClass: (type) => {
+          switch (type) {
+          case 'error': return 'alert-danger';
+          case 'info': return 'alert-info';
+          case 'warning': return 'alert-warning';
+          case 'success': return 'alert-success';
+          default: return 'alert-secondary';
+          }
+        },
+      });
     }
   });
 

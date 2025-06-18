@@ -8,11 +8,16 @@ block content
     +input(task, 'name', errors)(type="text" label=t('views.tasks.new.form.name'))
     +input(task, 'description', errors)(type="text" label=t('views.tasks.new.form.description'))
 
-    label(for="statusId")= t('views.tasks.new.form.status')
-    select(id="data_statusId" name="data[statusId]" required).form-select
-      option(value="") #{t('views.tasks.new.form.selectStatus')}
-      each status in statuses
-        option(value=status.id selected=(String(task.statusId) === String(status.id)))= status.name
+    - const statusErrors = errors.statusId || []
+    - const statusInvalid = !_.isEmpty(statusErrors)
+    .form-group.mb-3
+      label(for="data_statusId")= t('views.tasks.new.form.status')
+      select.form-select(class={ 'is-invalid': statusInvalid }, id="data_statusId", name="data[statusId]")
+        option(value="") #{t('views.tasks.new.form.selectStatus')}
+        each status in statuses
+          option(value=status.id selected=(String(task.statusId) === String(status.id)))= status.name
+      if statusInvalid
+        .invalid-feedback= statusErrors.map(({ message }) => message).join('. ')
 
     label(for="executorId")= t('views.tasks.new.form.executor')
     select(id="data_executorId" name="data[executorId]").form-select

@@ -56,7 +56,7 @@ html(lang="en")
           if messages && messages.length
             each message in messages
               - const alertClass = getAlertClass ? getAlertClass(type) : 'alert-secondary'
-              div.alert(class=`alert ${alertClass}` role="alert")= message
+              div(class=`alert ${alertClass}` role="alert")= message
 
       h1.my-4
         block header

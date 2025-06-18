@@ -73,7 +73,7 @@ export default {
         created: 'Task successfully created',
         updated: 'Task updated successfully',
         deleted: 'Task deleted successfully',
-        error: 'Error processing task',
+        error: 'Failed to create task',
         deleteDenied: 'A task can only be deleted by its author',
       },
 
