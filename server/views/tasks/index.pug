@@ -62,8 +62,8 @@ block content
           td
             a(href=route('tasks.show', { id: task.id }))= task.name
           td= task.status && task.status.name
-          td= task.creator && task.creator.email
-          td= task.executor && task.executor.email
+          td= task.creator && task.creator.fullName
+          td= task.executor && task.executor.fullName
           td= formatDate(task.createdAt)
           td
             a.btn.btn-sm.btn-outline-primary.me-2(href=route('tasks.edit', { id: task.id }))= t('views.tasks.action.edit')

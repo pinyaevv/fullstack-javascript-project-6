@@ -6,6 +6,13 @@ block header
 block content
   ul.list-group
     li.list-group-item
+      strong= t('views.tasks.show.status') + ': '
+      if task.status
+        | #{task.status.name}
+      else
+        | Неизвестно
+
+    li.list-group-item
       strong= t('views.tasks.show.labels') + ': '
       if task.labels && task.labels.length
         | #{task.labels.map((l) => l.name).join(', ')}

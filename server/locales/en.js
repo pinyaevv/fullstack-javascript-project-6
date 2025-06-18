@@ -173,6 +173,14 @@ export default {
           labels: 'Labels',
         },
 
+        filter: {
+          status: 'Status',
+          executor: 'Executor',
+          label: 'Label',
+          myTasksOnly: 'Just my tasks',
+          all: '',
+        },
+
         action: {
           new: 'Create task',
           show: 'Show',
@@ -206,12 +214,15 @@ export default {
           },
         },
 
-        filter: {
+        show: {
+          labels: 'Labels',
           status: 'Status',
+          description: 'Description',
           executor: 'Executor',
-          label: 'Label',
-          myTasksOnly: 'Just my tasks',
-          all: '',
+          creator: 'Author',
+          createdAt: 'Creation date',
+          edit: 'Edit',
+          delete: 'Delete',
         },
       },
 

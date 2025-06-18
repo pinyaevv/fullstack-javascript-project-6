@@ -216,6 +216,7 @@ export default {
 
         show: {
           labels: 'Метки',
+          status: 'Статус',
           description: 'Описание',
           executor: 'Исполнитель',
           creator: 'Автор',
