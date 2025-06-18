@@ -10,7 +10,7 @@ block content
   .row.mb-3
     .col-md-3
       label.form-label(for="statusId") #{t('views.tasks.filter.status')}
-      select.form-select(name="statusId", id="statusId")
+      select.form-select(name="statusId", id="data_status")
         option(value="") #{t('views.tasks.filter.all')}
         each status in statuses
           option(
@@ -20,7 +20,7 @@ block content
 
     .col-md-3
       label.form-label(for="executorId") #{t('views.tasks.filter.executor')}
-      select.form-select(name="executorId", id="executorId")
+      select.form-select(name="executorId", id="data_executor")
         option(value="") #{t('views.tasks.filter.all')}
         each user in users
           option(
@@ -30,7 +30,7 @@ block content
 
     .col-md-3
       label.form-label(for="labelId") #{t('views.tasks.filter.label')}
-      select.form-select(name="labelId", id="labelId")
+      select.form-select(name="labelId", id="data_label")
         option(value="") #{t('views.tasks.filter.all')}
         each label in labels
           option(
