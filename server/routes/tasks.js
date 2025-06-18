@@ -67,9 +67,14 @@ async function taskRoutes(app) {
 
   app.post('/tasks', { preHandler: authGuard, name: 'tasks.create' }, async (req, reply) => {
     const { data } = req.body;
-    data.creatorId = req.user.id;
-    data.statusId = data.statusId ? Number(data.statusId) : null;
-    data.executorId = data.executorId ? Number(data.executorId) : null;
+
+    const taskData = {
+      name: data.name,
+      description: data.description,
+      statusId: data.statusId ? Number(data.statusId) : null,
+      executorId: data.executorId ? Number(data.executorId) : null,
+      creatorId: req.user.id,
+    };
 
     let labelIds = [];
     if (Array.isArray(data.labelIds)) {
@@ -78,14 +83,12 @@ async function taskRoutes(app) {
       labelIds = [Number(data.labelIds)];
     }
 
-    delete data.labelIds;
-
     try {
-      const task = await app.objection.models.task.query().insert(data);
+      const task = await app.objection.models.task.query().insert(taskData);
 
-      if (labelIds.length > 0) {
-        await task.$relatedQuery('labels').relate(labelIds);
-      }
+      await Promise.all(
+        labelIds.map((labelId) => task.$relatedQuery('labels').relate(labelId))
+      );
 
       req.flash('info', app.i18n.t('flash.tasks.created'));
       return reply.redirect(app.reverse('tasks'));
