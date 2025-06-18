@@ -15,12 +15,25 @@ env:
 rules:
   no-console: 0
   import/extensions: 0
+  arrow-body-style: off
+
   indent:
     - error
-    - 2
+    - 4
+
+  eol-last:
+    - error
+    - always
+
+  no-extra-semi: error
+
+  newline-per-chained-call:
+    - error
+    - ignoreChainWithDepth: 2
   new-cap:
     - error
     - properties: false
+
   no-param-reassign:
     - error
     - props: true
@@ -28,6 +41,7 @@ rules:
         - req
         - reply
         - acc
+
   no-underscore-dangle:
     - error
     - allowAfterThis: true
@@ -35,4 +49,8 @@ rules:
         - _t
         - __dirname
         - __filename
-  camelcase: [error, { allow: [password_digest] }]
+
+  camelcase:
+    - error
+    - allow:
+        - password_digest

@@ -9,62 +9,62 @@ import { buildUserWithPassword } from './factories/userFactory.js';
 jest.setTimeout(30000);
 
 describe('test session', () => {
-  let app;
-  /** @type {import('knex').Knex} */
-  let knex;
-  let user;
+    let app;
+    /** @type {import('knex').Knex} */
+    let knex;
+    let user;
 
-  beforeAll(async () => {
-    app = fastify({
-      exposeHeadRoutes: false,
-      logger: false,
+    beforeAll(async () => {
+        app = fastify({
+            exposeHeadRoutes: false,
+            logger: false,
+        });
+
+        await init(app);
+        knex = /** @type {import('knex').Knex} */ (app.objection.knex);
+        await knex.migrate.latest();
+
+        const { plain, hashed } = buildUserWithPassword();
+        user = plain;
+
+        await prepareData(app, { users: [{ plain, hashed }] });
     });
 
-    await init(app);
-    knex = /** @type {import('knex').Knex} */ (app.objection.knex);
-    await knex.migrate.latest();
+    it('test sign in / sign out', async () => {
+        const response = await app.inject({
+            method: 'GET',
+            url: app.reverse('newSession'),
+        });
+        expect(response.statusCode).toBe(200);
 
-    const { plain, hashed } = buildUserWithPassword();
-    user = plain;
+        const responseSignIn = await app.inject({
+            method: 'POST',
+            url: app.reverse('session'),
+            payload: {
+                data: {
+                    email: user.email,
+                    password: user.password,
+                },
+            },
+        });
 
-    await prepareData(app, { users: [{ plain, hashed }] });
-  });
+        expect(responseSignIn.statusCode).toBe(302);
 
-  it('test sign in / sign out', async () => {
-    const response = await app.inject({
-      method: 'GET',
-      url: app.reverse('newSession'),
-    });
-    expect(response.statusCode).toBe(200);
+        const [sessionCookie] = responseSignIn.cookies;
+        const { name, value } = sessionCookie;
+        const cookie = { [name]: value };
 
-    const responseSignIn = await app.inject({
-      method: 'POST',
-      url: app.reverse('session'),
-      payload: {
-        data: {
-          email: user.email,
-          password: user.password,
-        },
-      },
-    });
+        const responseSignOut = await app.inject({
+            method: 'DELETE',
+            url: app.reverse('session'),
+            cookies: cookie,
+        });
 
-    expect(responseSignIn.statusCode).toBe(302);
-
-    const [sessionCookie] = responseSignIn.cookies;
-    const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
-
-    const responseSignOut = await app.inject({
-      method: 'DELETE',
-      url: app.reverse('session'),
-      cookies: cookie,
+        expect(responseSignOut.statusCode).toBe(302);
     });
 
-    expect(responseSignOut.statusCode).toBe(302);
-  });
-
-  afterAll(async () => {
-    await knex.migrate.rollback();
-    await app.close();
-  });
+    afterAll(async () => {
+        await knex.migrate.rollback();
+        await app.close();
+    });
 });
