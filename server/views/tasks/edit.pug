@@ -13,21 +13,21 @@ block content
     input(type="hidden" name="_method" value="patch")
 
     .form-group
-      label(for="name")= t('views.tasks.edit.form.name')
+      label(for="data_name")= t('views.tasks.edit.form.name')
       input#data_name.form-control(name="data[name]" required value=task.name)
       if errors.name
         each err in errors.name
           .invalid-feedback(style='display:block')= err
 
     .form-group
-      label(for="description")= t('views.tasks.edit.form.description')
+      label(for="data_description")= t('views.tasks.edit.form.description')
       textarea#data_description.form-control(name="data[description]")= task.description
       if errors.description
         each err in errors.description
           .invalid-feedback(style='display:block')= err
 
     .form-group
-      label(for="statusId")= t('views.tasks.edit.form.status')
+      label(for="data_statusId")= t('views.tasks.edit.form.status')
       select#data_statusId.form-control(name="data[statusId]" required)
         option(value="") #{t('views.tasks.new.edit.form.selectStatus')}
         each status in statuses
@@ -40,7 +40,7 @@ block content
           .invalid-feedback(style='display:block')= err
 
     .form-group
-      label(for="executorId")= t('views.tasks.edit.form.executor')
+      label(for="data_executorId")= t('views.tasks.edit.form.executor')
       select#data_executorId.form-control(name="data[executorId]")
         option(value="") #{t('views.tasks.edit.form.selectExecutor')}
         each user in users
@@ -53,7 +53,7 @@ block content
           .invalid-feedback(style='display:block')= err
     
     .form-group
-      label(for="labelIds")= t('views.tasks.edit.form.labels')
+      label(for="data_labels")= t('views.tasks.edit.form.labels')
       select#data_labels(name="data[labelIds][]" multiple).form-select
         each label in labels
           option(value=label.id selected=labelIds.includes(label.id))= label.name
