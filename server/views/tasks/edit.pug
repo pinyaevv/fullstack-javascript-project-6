@@ -14,21 +14,21 @@ block content
 
     .form-group
       label(for="name")= t('views.tasks.edit.form.name')
-      input#name.form-control(name="data[name]" required value=task.name)
+      input#data_name.form-control(name="data[name]" required value=task.name)
       if errors.name
         each err in errors.name
           .invalid-feedback(style='display:block')= err
 
     .form-group
       label(for="description")= t('views.tasks.edit.form.description')
-      textarea#description.form-control(name="data[description]")= task.description
+      textarea#data_description.form-control(name="data[description]")= task.description
       if errors.description
         each err in errors.description
           .invalid-feedback(style='display:block')= err
 
     .form-group
       label(for="statusId")= t('views.tasks.edit.form.status')
-      select#statusId.form-control(name="data[statusId]" required)
+      select#data_statusId.form-control(name="data[statusId]" required)
         option(value="") #{t('views.tasks.new.edit.form.selectStatus')}
         each status in statuses
           option(
@@ -41,7 +41,7 @@ block content
 
     .form-group
       label(for="executorId")= t('views.tasks.edit.form.executor')
-      select#executorId.form-control(name="data[executorId]")
+      select#data_executorId.form-control(name="data[executorId]")
         option(value="") #{t('views.tasks.edit.form.selectExecutor')}
         each user in users
           option(
