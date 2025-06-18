@@ -68,7 +68,6 @@ async function taskRoutes(app) {
   app.post('/tasks', { preHandler: authGuard, name: 'tasks.create' }, async (req, reply) => {
     const { data } = req.body;
     data.creatorId = req.user.id;
-
     data.statusId = data.statusId ? Number(data.statusId) : null;
     data.executorId = data.executorId ? Number(data.executorId) : null;
 
@@ -79,8 +78,11 @@ async function taskRoutes(app) {
       labelIds = [Number(data.labelIds)];
     }
 
+    delete data.labelIds;
+
     try {
       const task = await app.objection.models.task.query().insert(data);
+
       if (labelIds.length > 0) {
         await task.$relatedQuery('labels').relate(labelIds);
       }
@@ -88,16 +90,16 @@ async function taskRoutes(app) {
       req.flash('info', app.i18n.t('flash.tasks.created'));
       return reply.redirect(app.reverse('tasks'));
     } catch (error) {
+      console.error('Ошибка при создании задачи:', error);
       reply.code(422);
 
       const statuses = await app.objection.models.taskStatus.query();
       const users = await app.objection.models.user.query();
       const labels = await app.objection.models.label.query();
-
       const errorMessage = app.i18n.t('flash.tasks.error');
 
       return reply.view('tasks/new', {
-        task: data,
+        task: req.body.data,
         statuses,
         users,
         labels,
