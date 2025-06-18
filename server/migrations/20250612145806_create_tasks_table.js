@@ -7,15 +7,18 @@ export async function up(knex) {
     table.string('name').notNullable();
     table.text('description');
     table.integer('status_id').unsigned().notNullable()
-      .references('id').inTable('task_statuses')
+      .references('id')
+        .inTable('task_statuses')
       .onDelete('RESTRICT')
       .onUpdate('CASCADE');
     table.integer('creator_id').unsigned().notNullable()
-      .references('id').inTable('users')
+      .references('id')
+        .inTable('users')
       .onDelete('RESTRICT')
       .onUpdate('CASCADE');
     table.integer('executor_id').unsigned()
-      .references('id').inTable('users')
+      .references('id')
+        .inTable('users')
       .onDelete('RESTRICT')
       .onUpdate('CASCADE');
     table.timestamps(true, true);

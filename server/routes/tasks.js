@@ -113,11 +113,11 @@ async function taskRoutes(app) {
         currentUser: req.user,
         getAlertClass: (type) => {
           switch (type) {
-          case 'error': return 'alert-danger';
-          case 'info': return 'alert-info';
-          case 'warning': return 'alert-warning';
-          case 'success': return 'alert-success';
-          default: return 'alert-secondary';
+            case 'error': return 'alert-danger';
+            case 'info': return 'alert-info';
+            case 'warning': return 'alert-warning';
+            case 'success': return 'alert-success';
+            default: return 'alert-secondary';
           }
         },
       });

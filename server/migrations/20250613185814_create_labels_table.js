@@ -8,7 +8,7 @@ export async function up(knex) {
     table.string('name').notNullable().unique();
     table.timestamp('created_at').defaultTo(knex.fn.now());
   });
-};
+}
 
 /**
  * @param { import("knex").Knex } knex
@@ -16,4 +16,4 @@ export async function up(knex) {
  */
 export async function down(knex) {
   await knex.schema.dropTable('labels');
-};
+}

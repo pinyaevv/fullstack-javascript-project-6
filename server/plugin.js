@@ -86,11 +86,11 @@ const addHooks = (app) => {
       flash,
       getAlertClass: (type) => {
         switch (type) {
-        case 'error': return 'alert-danger';
-        case 'info': return 'alert-info';
-        case 'warning': return 'alert-warning';
-        case 'success': return 'alert-success';
-        default: return 'alert-secondary';
+          case 'error': return 'alert-danger';
+          case 'info': return 'alert-info';
+          case 'warning': return 'alert-warning';
+          case 'success': return 'alert-success';
+          default: return 'alert-secondary';
         }
       },
       formatDate: (date) => dayjs(date).format('YYYY-MM-DD HH:mm:ss'),
