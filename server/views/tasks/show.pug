@@ -1,24 +1,42 @@
 extends ../layouts/application.pug
 
 block header
-  | #{t('views.tasks.show.title')}
+  | #{task.name}
 
 block content
   ul.list-group
     li.list-group-item
-      strong= t('views.tasks.show.name') + ': '
-      | #{task.name}
+      strong= t('views.tasks.show.labels') + ': '
+      if task.labels && task.labels.length
+        | #{task.labels.map((l) => l.name).join(', ')}
+      else
+        | Нет меток
+
     li.list-group-item
       strong= t('views.tasks.show.description') + ': '
       | #{task.description}
-    li.list-group-item
-      strong= t('views.tasks.show.status') + ': '
-      | #{task.status && task.status.name}
+
     li.list-group-item
       strong= t('views.tasks.show.creator') + ': '
-      | #{task.creator && task.creator.email}
+      if task.creator
+        | #{task.creator.fullName}
+      else
+        | Неизвестно
+
+    li.list-group-item
+      strong= t('views.tasks.show.executor') + ': '
+      if task.executor
+        | #{task.executor.fullName}
+      else
+        | Нет исполнителя
+
     li.list-group-item
       strong= t('views.tasks.show.createdAt') + ': '
       | #{formatDate(task.createdAt)}
 
-  a.btn.btn-outline-secondary.mt-3(href=route('tasks.edit', { id: task.id }))= t('views.tasks.show.edit')
+  .d-flex.flex-wrap
+    a.btn.btn-primary.me-1(href=route('tasks.edit', { id: task.id }))= t('views.tasks.show.edit')
+
+    +formFor(null, { action: route('tasks.delete', { id: task.id }), method: 'POST' })
+      input(type="hidden" name="_method" value="delete")
+      input.btn.btn-danger(type="submit" value=t('views.tasks.show.delete'))

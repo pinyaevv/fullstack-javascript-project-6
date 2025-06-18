@@ -87,7 +87,7 @@ async function taskRoutes(app) {
       const task = await app.objection.models.task.query().insert(taskData);
 
       await Promise.all(
-        labelIds.map((labelId) => task.$relatedQuery('labels').relate(labelId))
+        labelIds.map((labelId) => task.$relatedQuery('labels').relate(labelId)),
       );
 
       req.flash('info', app.i18n.t('flash.tasks.created'));
@@ -127,7 +127,7 @@ async function taskRoutes(app) {
   app.get('/tasks/:id', { name: 'tasks.show' }, async (req, reply) => {
     const task = await Task.query()
       .findById(req.params.id)
-      .withGraphFetched('[status, creator, executor]');
+      .withGraphFetched('[status, creator, executor, labels]');
     if (!task) {
       return reply.code(404).send();
     }
@@ -157,14 +157,24 @@ async function taskRoutes(app) {
       if (!task) {
         return reply.code(404).send();
       }
+
       if (task.creatorId !== req.user.id) {
         req.flash('error', app.i18n.t('flash.tasks.updateDenied'));
         return reply.redirect('/tasks');
       }
 
       const {
-        name, description, statusId, executorId, labelIds,
+        name, description, statusId, executorId,
       } = req.body.data;
+
+      let labelIdsRaw = req.body.data.labelIds;
+      if (labelIdsRaw == null) {
+        labelIdsRaw = [];
+      } else if (!Array.isArray(labelIdsRaw)) {
+        labelIdsRaw = [labelIdsRaw];
+      }
+
+      const normalizedLabelIds = labelIdsRaw.map((id) => Number(id));
 
       const updatedTask = await Task.query().patchAndFetchById(req.params.id, {
         name,
@@ -173,17 +183,11 @@ async function taskRoutes(app) {
         executorId: executorId ? Number(executorId) : null,
       });
 
-      let normalizedLabelIds = [];
-
-      if (Array.isArray(labelIds)) {
-        normalizedLabelIds = labelIds.map(Number);
-      } else if (labelIds) {
-        normalizedLabelIds = [Number(labelIds)];
-      }
-
       await updatedTask.$relatedQuery('labels').unrelate();
       if (normalizedLabelIds.length > 0) {
-        await updatedTask.$relatedQuery('labels').relate(normalizedLabelIds);
+        await Promise.all(
+          normalizedLabelIds.map((id) => updatedTask.$relatedQuery('labels').relate(id)),
+        );
       }
 
       req.flash('info', app.i18n.t('flash.tasks.updated'));

@@ -173,6 +173,14 @@ export default {
           labels: 'Метки',
         },
 
+        filter: {
+          status: 'Статус',
+          executor: 'Исполнитель',
+          label: 'Метка',
+          myTasksOnly: 'Только мои задачи',
+          all: '',
+        },
+
         action: {
           new: 'Создать задачу',
           show: 'Просмотреть',
@@ -206,12 +214,14 @@ export default {
           },
         },
 
-        filter: {
-          status: 'Статус',
+        show: {
+          labels: 'Метки',
+          description: 'Описание',
           executor: 'Исполнитель',
-          label: 'Метка',
-          myTasksOnly: 'Только мои задачи',
-          all: '',
+          creator: 'Автор',
+          createdAt: 'Дата создания',
+          edit: 'Изменить',
+          delete: 'Удалить',
         },
       },
 

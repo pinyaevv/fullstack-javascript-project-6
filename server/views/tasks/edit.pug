@@ -54,7 +54,7 @@ block content
     
     .form-group
       label(for="labelIds")= t('views.tasks.edit.form.labels')
-      select#data_labels(name="data[labelIds]" multiple).form-select
+      select#data_labels(name="data[labelIds][]" multiple).form-select
         each label in labels
           option(value=label.id selected=labelIds.includes(label.id))= label.name
 
