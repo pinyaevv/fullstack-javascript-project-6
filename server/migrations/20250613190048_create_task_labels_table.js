@@ -7,11 +7,11 @@ export async function up(knex) {
     table.increments('id').primary();
     table.integer('task_id').unsigned().notNullable()
       .references('id')
-        .inTable('tasks')
+      .inTable('tasks')
       .onDelete('CASCADE');
     table.integer('label_id').unsigned().notNullable()
       .references('id')
-        .inTable('labels')
+      .inTable('labels')
       .onDelete('CASCADE');
     table.unique(['task_id', 'label_id']);
   });
