@@ -183,7 +183,7 @@ export default {
 
         action: {
           new: 'Создать задачу',
-          show: 'Просмотреть',
+          show: 'Показать',
           edit: 'Изменить',
           delete: 'Удалить',
         },
