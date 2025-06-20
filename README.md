@@ -2,12 +2,12 @@
 [![Actions Status](https://github.com/pinyaevv/fullstack-javascript-project-6/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/pinyaevv/fullstack-javascript-project-6/actions)
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=pinyaevv_fullstack-javascript-project-6)](https://sonarcloud.io/summary/new_code?id=pinyaevv_fullstack-javascript-project-6)
 
-## Приложение задеплоено на Railway:  
+## Application deployed to Railway:  
 🔗 [Task Manager on Railway](https://fullstack-javascript-project-6-production-f4f5.up.railway.app)
 
 ## Description
 
-Task Manager is a web application for creating, assigning, and tracking tasks. It is inspired by project management tools like Trello or Jira, and is developed as part of a fullstack JavaScript course on Hexlet.
+Task Manager is a web application for creating, assigning, and tracking tasks. Developed as part of a fullstack JavaScript course on Hexlet.
 
 The project features:
 
@@ -33,5 +33,6 @@ The project features:
 Clone the repository and run the following commands:
 
 ```bash
-make setup
+make install
+make db-migrate
 make start
