@@ -1,4 +1,9 @@
-import { beforeEach, describe, test, expect } from '@jest/globals';
+import {
+  beforeEach,
+  describe,
+  test,
+  expect,
+} from '@jest/globals';
 import fastify from 'fastify';
 import init from '../server/plugin.js';
 import { encrypt } from '../server/lib/secure.js';
