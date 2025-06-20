@@ -61,7 +61,7 @@ describe('test tasks CRUD', () => {
     await app.close();
   });
 
-  it('GET /tasks - список задач', async () => {
+  it('GET /tasks - to-do list', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('tasks'),
@@ -70,7 +70,7 @@ describe('test tasks CRUD', () => {
     expect(response.body).toContain(testTasks[0].name);
   });
 
-  it('GET /tasks/new - редирект для неавторизованных', async () => {
+  it('GET /tasks/new - redirect for unauthorized', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('tasks.new'),
@@ -79,7 +79,7 @@ describe('test tasks CRUD', () => {
     expect(response.headers.location).toBe(app.reverse('root'));
   });
 
-  it('GET /tasks/new - доступ для авторизованных', async () => {
+  it('GET /tasks/new - access for authorized', async () => {
     const user = testUsers[0];
 
     const loginRes = await app.inject({
@@ -99,7 +99,7 @@ describe('test tasks CRUD', () => {
     expect(response.body).toContain('Создание задачи');
   });
 
-  it('POST /tasks - создание задачи (авторизованный)', async () => {
+  it('POST /tasks - create task (authorized)', async () => {
     const user = testUsers[0];
 
     const loginRes = await app.inject({
@@ -131,7 +131,7 @@ describe('test tasks CRUD', () => {
     expect(created).toMatchObject(_.omit(taskData, ['executorId']));
   });
 
-  it('POST /tasks - редирект для неавторизованных', async () => {
+  it('POST /tasks - redirect for unauthorized', async () => {
     const taskData = {
       name: 'New Task Test Unauthorized',
       description: 'Description',
@@ -148,7 +148,7 @@ describe('test tasks CRUD', () => {
     expect(response.headers.location).toBe(app.reverse('root'));
   });
 
-  it('GET /tasks/:id - просмотр задачи', async () => {
+  it('GET /tasks/:id - view task', async () => {
     const task = testTasks[0];
 
     const response = await app.inject({
@@ -159,7 +159,7 @@ describe('test tasks CRUD', () => {
     expect(response.body).toContain(task.name);
   });
 
-  it('GET /tasks/:id/edit - редирект для неавторизованных', async () => {
+  it('GET /tasks/:id/edit - redirect for unauthorized', async () => {
     const task = testTasks[0];
 
     const response = await app.inject({
@@ -170,7 +170,7 @@ describe('test tasks CRUD', () => {
     expect(response.headers.location).toBe(app.reverse('root'));
   });
 
-  it('GET /tasks/:id/edit - доступ для создателя задачи', async () => {
+  it('GET /tasks/:id/edit - access for task creator', async () => {
     const user = testUsers[0];
     const task = testTasks[0];
 
@@ -191,7 +191,7 @@ describe('test tasks CRUD', () => {
     expect(response.body).toContain(task.name);
   });
 
-  it('PATCH /tasks/:id - обновление создателем', async () => {
+  it('PATCH /tasks/:id - update by creator', async () => {
     const user = testUsers[0];
     const task = testTasks[0];
 
@@ -224,7 +224,7 @@ describe('test tasks CRUD', () => {
     expect(updated.name).toBe(newData.name);
   });
 
-  it('PATCH /tasks/:id - отказ в обновлении не-создателем', async () => {
+  it('PATCH /tasks/:id - non-creator update denied', async () => {
     const [anotherUser] = testUsers;
     const task = testTasks[0];
     const newData = { name: 'Should Not Update' };
@@ -249,7 +249,7 @@ describe('test tasks CRUD', () => {
     expect(notUpdated.name).not.toBe(newData.name);
   });
 
-  it('DELETE /tasks/:id - удаление создателем', async () => {
+  it('DELETE /tasks/:id - deletion by creator', async () => {
     const user = testUsers[0];
     const task = testTasks[0];
 
@@ -273,7 +273,7 @@ describe('test tasks CRUD', () => {
     expect(deleted).toBeUndefined();
   });
 
-  it('DELETE /tasks/:id - отказ не-создателю', async () => {
+  it('DELETE /tasks/:id - refusal to the non-creator', async () => {
     const [, anotherUser] = testUsers;
     const task = testTasks[0];
 
