@@ -1,109 +1,86 @@
-// @ts-check
+import { beforeEach, describe, test, expect } from '@jest/globals';
 import fastify from 'fastify';
 import init from '../server/plugin.js';
-import { buildUserWithPassword } from './factories/userFactory.js';
-import prepareData from './helpers/index.js';
+import { encrypt } from '../server/lib/secure.js';
 
-/**
- * @typedef {import('objection').Model & { id: number, name: string }} TaskStatus
- */
+let app;
+let knex;
+let models;
+
+beforeEach(async () => {
+  app = fastify();
+  await init(app);
+  await app.ready();
+
+  knex = app.objection.knex;
+  models = app.objection.models;
+
+  await knex.migrate.rollback(undefined, true);
+  await knex.migrate.latest();
+
+  await knex('users').insert({
+    email: 'Sheridan88@hotmail.com',
+    passwordDigest: encrypt('password'),
+  });
+
+  await knex('task_statuses').insert({ name: 'Open' });
+});
+
+afterEach(async () => {
+  await knex.migrate.rollback(undefined, true);
+  await app.close();
+});
 
 describe('Task statuses CRUD', () => {
-  let app;
-  /** @type {import('knex').Knex} */
-  let knex;
-  /** @type {any} */
-  let models;
-  let user;
-  let cookies;
-
-  beforeEach(async () => {
-    app = fastify();
-    await init(app);
-    await app.ready();
-    knex = /** @type {import('knex').Knex} */ (app.objection.knex);
-    models = app.objection.models;
-
-    await knex.migrate.rollback(undefined, true);
-    await knex.migrate.latest();
-
-    const { plain, hashed } = buildUserWithPassword();
-    user = plain;
-
-    await prepareData(app, { users: [{ plain, hashed }] });
-
-    const login = await app.inject({
-      method: 'POST',
-      url: app.reverse('session'),
-      payload: { data: { email: user.email, password: user.password } },
-    });
-
-    const [cookie] = login.cookies;
-    cookies = { [cookie.name]: cookie.value };
-  });
-
-  afterEach(async () => {
-    if (app) {
-      await app.close();
-    }
-  });
-
-  it('index page', async () => {
-    const res = await app.inject({
+  test('index page', async () => {
+    const response = await app.inject({
       method: 'GET',
-      url: app.reverse('taskStatuses'),
+      url: '/statuses',
     });
-    expect(res.statusCode).toBe(200);
+    expect(response.statusCode).toBe(200);
   });
 
-  it('new page', async () => {
-    const res = await app.inject({
+  test('new page', async () => {
+    const response = await app.inject({
       method: 'GET',
-      url: app.reverse('newTaskStatus'),
+      url: '/statuses/new',
     });
-    expect(res.statusCode).toBe(200);
+    expect(response.statusCode).toBe(200);
   });
 
-  it('create', async () => {
-    const params = { name: 'ready' };
-
-    const res = await app.inject({
+  test('create', async () => {
+    const response = await app.inject({
       method: 'POST',
-      url: app.reverse('taskStatuses'),
-      cookies,
-      payload: { data: params },
+      url: '/statuses',
+      payload: { data: { name: 'In Progress' } },
     });
+    expect(response.statusCode).toBe(302);
 
-    expect(res.statusCode).toBe(302);
-    const status = await models.taskStatus.query().findOne({ name: 'ready' });
+    const status = await models.taskStatus.query().findOne({ name: 'In Progress' });
     expect(status).not.toBeNull();
   });
 
-  it('update', async () => {
-    const status = await models.taskStatus.query().insert({ name: 'will-be-updated' });
-
-    const res = await app.inject({
+  test('update', async () => {
+    const [status] = await models.taskStatus.query();
+    const response = await app.inject({
       method: 'PATCH',
-      url: app.reverse('updateTaskStatus', { id: status.id }),
-      cookies,
-      payload: { data: { name: 'updated' } },
+      url: `/statuses/${status.id}`,
+      payload: { data: { name: 'Updated' } },
     });
+    expect(response.statusCode).toBe(302);
 
-    expect(res.statusCode).toBe(302);
     const updated = await models.taskStatus.query().findById(status.id);
-    expect(updated.name).toBe('updated');
+    expect(updated.name).toBe('Updated');
   });
 
-  it('delete', async () => {
-    const status = await models.taskStatus.query().insert({ name: 'to-be-deleted' });
-
-    const res = await app.inject({
+  test('delete', async () => {
+    const [status] = await models.taskStatus.query();
+    const response = await app.inject({
       method: 'DELETE',
-      url: app.reverse('deleteTaskStatus', { id: status.id }),
-      cookies,
+      url: `/statuses/${status.id}`,
     });
+    expect(response.statusCode).toBe(302);
 
-    expect(res.statusCode).toBe(302);
     const deleted = await models.taskStatus.query().findById(status.id);
     expect(deleted).toBeUndefined();
   });

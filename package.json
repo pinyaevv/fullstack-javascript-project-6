@@ -2,7 +2,7 @@
    "name": "@hexlet/code",
    "version": "0.1.0",
    "type": "module",
-   "description": "fastify-nodejs-application",
+   "description": "Tasks Manager",
    "main": "./server/plugin.js",
    "engines": {
       "node": ">=16.x"
@@ -23,7 +23,7 @@
          "dotenv/config"
       ]
    },
-   "author": "Stanislav Dzisiak",
+   "author": "Pinyaev Vladimir",
    "license": "ISC",
    "repository": {
       "type": "git",
