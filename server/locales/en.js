@@ -1,8 +1,6 @@
 // @ts-check
-import base from './base.js';
-import _ from 'lodash';
 
-export default _.merge({}, base, {
+export default {
   translation: {
     appName: 'Task Manager',
 
@@ -256,4 +254,4 @@ export default _.merge({}, base, {
       },
     },
   },
-});
+};
