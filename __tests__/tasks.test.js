@@ -2,7 +2,7 @@ import _ from 'lodash';
 import fastify from 'fastify';
 
 import init from '../server/plugin.js';
-import prepareData from './helpers/index.js';
+import prepareData from '../test-helpers/helpers/index.js';
 
 describe('test tasks CRUD', () => {
   let app;

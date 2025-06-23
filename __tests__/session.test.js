@@ -1,12 +1,9 @@
 // @ts-check
 
 import fastify from 'fastify';
-import { jest } from '@jest/globals';
 import init from '../server/plugin.js';
-import prepareData from './helpers/index.js';
-import { buildUserWithPassword } from './factories/userFactory.js';
-
-jest.setTimeout(30000);
+import prepareData from '../test-helpers/helpers/index.js';
+import { buildUserWithPassword } from '../test-helpers/factories/userFactory.js';
 
 describe('test session', () => {
   let app;

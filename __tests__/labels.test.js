@@ -1,7 +1,7 @@
 import fastify from 'fastify';
 
 import init from '../server/plugin.js';
-import prepareData from './helpers/index.js';
+import prepareData from '../test-helpers/helpers/index.js';
 
 describe('test labels CRUD', () => {
   let app;
