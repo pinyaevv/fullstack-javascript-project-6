@@ -35,4 +35,5 @@ Clone the repository and run the following commands:
 ```bash
 make install
 make db-migrate
+make build
 make start
