@@ -1,6 +1,6 @@
 // @ts-check
 
-import { buildUserWithPassword } from '../../test-helpers/factories/userFactory.js';
+import { buildUserWithPassword } from '../factories/userFactory.js';
 
 const prepareData = async (app, options = {}) => {
   const { knex } = app.objection;
